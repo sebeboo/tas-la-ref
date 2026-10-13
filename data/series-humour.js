@@ -9,8 +9,8 @@ window.TALR_DATA.push({
   couleur: "linear-gradient(135deg,#ff3cac,#b620e0)",
   refs: [
     // --- Kaamelott ---
-    ["C'est pas faux !", "Kaamelott", "Perceval (Franck Pitiot)", 2005, "Ce que dit Perceval quand il n'a rien compris mais n'ose pas l'avouer."],
-    ["Le gras, c'est la vie !", "Kaamelott", "Karadoc (Jean-Christophe Hembert)", 2005, "La devise de Karadoc, chevalier gourmand qui refuse tout régime. À brandir devant une raclette."],
+    ["C'est pas faux !", "Kaamelott", "Perceval (Franck Pitiot)", 2005, "Ce que dit Perceval quand il n'a rien compris mais n'ose pas l'avouer.", "", "https://media.giphy.com/media/3o84TZ6rOiGqdpzNRe/200w.webp", "https://giphy.com/gifs/kaamelott-perceval-cest-pas-faux-3o84TZ6rOiGqdpzNRe"],
+    ["Le gras, c'est la vie !", "Kaamelott", "Karadoc (Jean-Christophe Hembert)", 2005, "La devise de Karadoc, chevalier gourmand qui refuse tout régime. À brandir devant une raclette.", "", "https://media.giphy.com/media/Zf5c3sMjJgP5e/200w.webp", "https://giphy.com/gifs/kaamelott-Zf5c3sMjJgP5e"],
     ["Pays de Galles indépendant !", "Kaamelott", "Perceval & Karadoc", 2005, "Le cri patriotique et décalé de Perceval, chevalier venu du pays de Galles. Pour revendiquer n'importe quoi avec fougue."],
     ["Faut arrêter ces conneries de nord et de sud ! Une fois pour toutes, le nord, suivant comment on est tourné, ça change tout !", "Kaamelott", "Perceval (Franck Pitiot)", 2005, "Perceval et sa théorie très personnelle de l'orientation. Pour les potes qui se perdent même avec un GPS."],
     ["Elle est où la poulette ?", "Kaamelott", "Kadoc (Brice Fournier)", 2006, "Kadoc, le frère de Karadoc, et sa question fétiche répétée à l'envi. Pour chercher quelque chose… ou quelqu'un."],
@@ -21,7 +21,7 @@ window.TALR_DATA.push({
     ["Cul de chouette !", "Kaamelott", "Le jeu de dés favori de Perceval et Karadoc", 2005, "Le jeu de dés aux règles délirantes de la taverne de Kaamelott. Pour proposer un jeu dont personne ne connaît les règles."],
     ["Sloubi un, sloubi deux, sloubi trois…", "Kaamelott", "Perceval explique le sloubi, jeu aux règles incompréhensibles", 2006, "Perceval tente d'expliquer le sloubi, un jeu incompréhensible. Pour une explication qui ne mène nulle part."],
     // --- Séries françaises ---
-    ["Bref.", "Bref.", "Le héros (Kyan Khojandi)", 2011, "Le mot qui conclut chaque épisode de la mini-série de Canal+."],
+    ["Bref.", "Bref.", "Le héros (Kyan Khojandi)", 2011, "Le mot qui conclut chaque épisode de la mini-série de Canal+.", "", "https://media.giphy.com/media/oDCSd9hFVakIE/200w.webp", "https://giphy.com/gifs/canal-bref-oDCSd9hFVakIE"],
     ["Chouchou ! — Quoi, Loulou ?", "Un gars, une fille", "Jean Dujardin & Alexandra Lamy", 1999, "Les petits noms de Jean et Alex dans la mini-série de France 2 qui a révélé le couple Dujardin-Lamy. Pour taquiner ton/ta chéri(e)."],
     ["Joséphine claque des doigts… et hop, elle a disparu !", "Joséphine, ange gardien", "Mimie Mathy", 1997, "Mimie Mathy, ange gardien de TF1, apparaît et disparaît d'un claquement de doigts. Pour s'éclipser d'une soirée."],
     ["Belphégor, le fantôme du Louvre", "Belphégor", "Le feuilleton qui terrifiait la France", 1965, "Le feuilleton de 1965 qui a terrifié la France : un fantôme masqué hante le musée. Pour un bruit bizarre la nuit."],

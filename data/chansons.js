@@ -33,7 +33,7 @@ window.TALR_DATA.push({
     ["Terre brûlée au vent des landes de pierre", "Les Lacs du Connemara", "Michel Sardou", 1981, "LE morceau de fin de soirée : tout le monde se lève et chante."],
     ["Elle court, elle court, la maladie d'amour", "La Maladie d'amour", "Michel Sardou", 1973, "Un des plus grands tubes de Michel Sardou. Pour parler d'un coup de foudre."],
     ["Mes chers parents, je pars", "Je vole", "Michel Sardou", 1978, "Une chanson de Sardou sur le départ, reprise par Louane dans le film La Famille Bélier."],
-    ["Allumer le feu !", "Allumer le feu", "Johnny Hallyday", 1998, "L'hymne de Johnny pour ses concerts au Stade de France. Pour lancer la soirée."],
+    ["Allumer le feu !", "Allumer le feu", "Johnny Hallyday", 1998, "L'hymne de Johnny pour ses concerts au Stade de France. Pour lancer la soirée.", "", "https://media.giphy.com/media/3oxHQn8rIF8UDzMt7a/200w.webp", "https://giphy.com/gifs/franceinfo-johnny-hallyday-3oxHQn8rIF8UDzMt7a"],
     ["Que je t'aime, que je t'aime, que je t'aime", "Que je t'aime", "Johnny Hallyday", 1969, "La ballade la plus intense de Johnny. Pour une déclaration enflammée."],
     ["Noir c'est noir, il n'y a plus d'espoir", "Noir c'est noir", "Johnny Hallyday", 1966, "Adaptation française d'un tube américain, l'un des premiers grands succès de Johnny."],
     ["Quelque chose en nous de Tennessee", "Quelque chose de Tennessee", "Johnny Hallyday", 1985, "L'hommage de Johnny, sur un texte de Michel Berger, au dramaturge Tennessee Williams."],

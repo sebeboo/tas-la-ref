@@ -611,3 +611,7 @@ body {
 /* --- Pastilles de filtres : retour à la ligne au lieu du défilement (plus rien de coupé) --- */
 .toolbar { flex-wrap: wrap; overflow: visible; padding: 2px 0 4px; }
 .chip { padding: 7px 12px; font-size: 12.5px; }
+
+/* --- Sticker emoji quand il n'y a pas d'image libre --- */
+.ref-img.emoji { display: grid; place-items: center; background: linear-gradient(135deg, #ffd6ef, #f1e0ff); }
+.ref-img.emoji span { font-size: 38px; filter: drop-shadow(2px 3px 0 rgba(194, 0, 110, .25)); transform: rotate(-6deg); }

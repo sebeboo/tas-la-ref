@@ -9,7 +9,7 @@ window.TALR_DATA.push({
   couleur: "linear-gradient(135deg,#b620e0,#ff3cac)",
   refs: [
     // --- Petites phrases devenues virales ---
-    ["Casse-toi, pauv' con !", "Salon de l'agriculture", "Nicolas Sarkozy", 2008, "La réponse du président à un visiteur qui refusait de lui serrer la main, filmée et vue des millions de fois. Petite phrase devenue mème."],
+    ["Casse-toi, pauv' con !", "Salon de l'agriculture", "Nicolas Sarkozy", 2008, "La réponse du président à un visiteur qui refusait de lui serrer la main, filmée et vue des millions de fois. Petite phrase devenue mème.", "", "https://media.giphy.com/media/l2Jhp0bpFkz7Bl2yQ/200w.webp", "https://giphy.com/gifs/franceinfo-citation-nicolas-sarkozy-l2Jhp0bpFkz7Bl2yQ"],
     ["Win the yes needs the no to win against the no.", "Campagne du référendum européen", "Jean-Pierre Raffarin", 2005, "Un anglais très… personnel, devenu culte sur internet."],
     ["La route est droite, mais la pente est forte.", "Discours", "Jean-Pierre Raffarin", 2003, "Une « raffarinade », ces maximes du Premier ministre devenues cultes. Pour un projet difficile mais clair."],
     ["Abracadabrantesque.", "Interview", "Jacques Chirac", 2000, "Un mot emprunté à Rimbaud par Jacques Chirac pour qualifier une affaire. Pour une histoire invraisemblable."],
@@ -19,7 +19,7 @@ window.TALR_DATA.push({
     ["On met un pognon de dingue dans les minima sociaux.", "Vidéo publiée par l'Élysée", "Emmanuel Macron", 2018, "Une phrase prononcée en réunion et diffusée par l'Élysée lui-même. Pour une dépense jugée énorme."],
     ["Je traverse la rue, je vous trouve du travail.", "Échange avec un jeune horticulteur", "Emmanuel Macron", 2018, "La réponse d'Emmanuel Macron à un jeune chômeur, très commentée. Pour un conseil trop facile."],
     ["Qu'ils viennent me chercher !", "Affaire Benalla", "Emmanuel Macron", 2018, "Le défi lancé par Emmanuel Macron pendant l'affaire Benalla. Pour assumer, bravache."],
-    ["Parce que c'est notre projet !", "Meeting de la porte de Versailles", "Emmanuel Macron", 2016, "Emmanuel Macron crie cette phrase en fin de meeting, la voix cassée, et devient un mème. Pour défendre une idée avec énergie."],
+    ["Parce que c'est notre projet !", "Meeting de la porte de Versailles", "Emmanuel Macron", 2016, "Emmanuel Macron crie cette phrase en fin de meeting, la voix cassée, et devient un mème. Pour défendre une idée avec énergie.", "", "https://media.giphy.com/media/7Q7SqFSRmzkFq/200w.webp", "https://giphy.com/gifs/franceinfo-citation-emmanuel-macron-7Q7SqFSRmzkFq"],
     ["Des Gaulois réfractaires au changement.", "Voyage au Danemark", "Emmanuel Macron", 2018, "Une petite phrase sur les Français prononcée à l'étranger. Pour taquiner ceux qui n'aiment pas la nouveauté."],
     ["La République, c'est moi !", "Perquisition filmée", "Jean-Luc Mélenchon", 2018, "Jean-Luc Mélenchon s'oppose, en criant, à une perquisition filmée. Pour une colère très théâtrale."],
     ["Ma personne est sacrée !", "Perquisition filmée", "Jean-Luc Mélenchon", 2018, "La suite de la même scène de perquisition, devenue un mème. Quand on envahit ton espace."],
@@ -37,13 +37,13 @@ window.TALR_DATA.push({
     ["📍 Des dîners au homard qui coûtent son poste de ministre à François de Rugy", "Affaire de Rugy", "François de Rugy", 2019],
     ["Jojo avec un gilet jaune a le même statut qu'un ministre ou un député.", "Petite phrase", "Emmanuel Macron", 2019, "Une phrase sur la parole des réseaux sociaux pendant la crise des gilets jaunes. Pour relativiser l'autorité."],
     // --- Jean-Claude Van Damme ---
-    ["Je suis aware.", "Interview", "Jean-Claude Van Damme", 2004, "Jean-Claude Van Damme et son franglais philosophique, devenu culte. Pour dire que tu es au courant (et consciente)."],
+    ["Je suis aware.", "Interview", "Jean-Claude Van Damme", 2004, "Jean-Claude Van Damme et son franglais philosophique, devenu culte. Pour dire que tu es au courant (et consciente).", "", "https://media.giphy.com/media/26FfdEEdeXNYYloGs/200w.webp", "https://giphy.com/gifs/jeanclaudevanjohnson-amazon-101-26FfdEEdeXNYYloGs"],
     ["Un plus un égal onze.", "Interview", "Jean-Claude Van Damme", "", "La mathématique très personnelle de JCVD pour parler de l'union. Pour un calcul optimiste."],
     ["J'adore l'eau. Dans 20-30 ans, y'en aura plus.", "Interview", "Jean-Claude Van Damme", "", "JCVD et sa réflexion inquiète et décalée sur l'eau. Pour boire un verre d'eau avec gravité."],
     ["Si tu travailles avec un marteau-piqueur pendant un tremblement de terre, désynchronise-toi, sinon tu travailles pour rien.", "Interview", "Jean-Claude Van Damme", 2004, "Une sagesse de JCVD qui a fait le tour d'internet. Pour un conseil incompréhensible mais inspirant."],
     // --- YouTube & créateurs ---
     ["Salut les geeks !", "Salut les geeks", "Mathieu Sommet", 2010, "L'intro de l'émission de Mathieu Sommet, pilier du YouTube français. Pour saluer tes potes gamers."],
-    ["What the Cut ?!", "What the Cut", "Antoine Daniel", 2011, "L'émission d'Antoine Daniel qui commente les vidéos les plus absurdes d'internet. Devant une vidéo complètement folle."],
+    ["What the Cut ?!", "What the Cut", "Antoine Daniel", 2011, "L'émission d'Antoine Daniel qui commente les vidéos les plus absurdes d'internet. Devant une vidéo complètement folle.", "", "https://media.giphy.com/media/d3mo4hJAWQ8K15p6/200w.webp", "https://giphy.com/gifs/youdeo-happy-youtube-d3mo4hJAWQ8K15p6"],
     ["C'est en faisant n'importe quoi qu'on devient n'importe qui.", "Rémi Gaillard", "La devise du roi des vidéos à sketchs", 2005, "La devise de Rémi Gaillard, roi des canulars filmés de Montpellier. Pour justifier une idée farfelue."],
     ["📍 Norman et ses vidéos sur la vie de tous les jours, pionnier du YouTube français", "YouTube", "Norman Thavaud", 2011],
     ["📍 Le Joueur du Grenier teste les pires jeux vidéo rétro… et pète les plombs", "YouTube", "Frédéric Molas & Sébastien Rassiat", 2009],

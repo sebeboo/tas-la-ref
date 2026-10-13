@@ -30,9 +30,10 @@
     cat.items = [];
     cat.refs.forEach(([q, s, w, y, n, kw, gimg, gpage]) => {
       const id = cat.id + "-" + hash(q + "|" + s);
+      const raw = q;
       const moment = q.startsWith("📍");
       if (moment) q = q.replace(/^📍\s*/, "");
-      const ref = { id, q, s, w: w || "", y: y || "", n: n || "", kw: kw || "", gimg: gimg || "", gpage: gpage || "", cat, moment, vf: /\(VF\)/.test(s) };
+      const ref = { id, q, s, w: w || "", y: y || "", n: n || "", kw: kw || "", gimg: gimg || "", gpage: gpage || "", raw, cat, moment, vf: /\(VF\)/.test(s) };
       ref.hay = norm([q, s, w, y, n, cat.nom].join(" "));
       ALL.push(ref); cat.items.push(ref); BY_ID.set(id, ref);
     });
@@ -191,7 +192,8 @@
   }
 
   /* ---------- Images libres de droits (Wikipédia / Wikimedia Commons) ---------- */
-  const IMGS = window.TALR_IMAGES || {}; // pré-calculé (data/images.js) : requête -> { src, file, title, artist, license, url } ou null
+  const IMGS = window.TALR_IMAGES || {};
+  const REFIMG = window.TALR_REFIMG || {}; // image de repli propre à une carte (acteur·rice, artiste…) // pré-calculé (data/images.js) : requête -> { src, file, title, artist, license, url } ou null
   let wikiCache = store.get("wikiImg", {}); // repli : refs ajoutées après le pré-calcul
   let wikiQueue = Promise.resolve();       // une requête à la fois, espacées, pour respecter Wikimedia
   const politely = (fn) => (wikiQueue = wikiQueue.then(() => new Promise((ok) => setTimeout(ok, 500))).then(fn, fn));
@@ -225,22 +227,29 @@
     wikiCache[q] = res; store.set("wikiImg", wikiCache);
     return res;
   }
+  // Sticker emoji quand aucune image libre n'existe
+  const EMO_CAT = { cinema: ["🎬", "🍿", "🎞️"], series: ["📺", "🍿", "😂"], chansons: ["🎤", "🎶", "💿"], tele: ["📡", "📺", "🎙️"],
+    internet: ["💅", "🙄", "😏", "💁", "🔥", "😭", "🤌", "💬"], pubs: ["📢", "🛍️", "✨"], "dessins-animes": ["🧸", "✨", "🌈"] };
+  function emojiFor(r) { const l = EMO_CAT[r.cat.id] || ["✨"]; let h = 0; for (const ch of r.id) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return l[h % l.length]; }
   async function loadWikiImg(card) {
-    const r = BY_ID.get(card.dataset.id); const q = r && wikiQuery(r);
-    if (!q) return;
-    try {
-      const img = await wikiImage(q);
-      if (!img) return;
+    const r = BY_ID.get(card.dataset.id); if (!r || r.cat.gif) return;
+    const q = wikiQuery(r);
+    let img = REFIMG[r.raw + "|" + r.s] || null;
+    if (!img && q) { try { img = await wikiImage(q); } catch { img = null; } }
+    if (!img) {
       card.classList.add("has-img");
-      card.insertAdjacentHTML("afterbegin", `<figure class="ref-img"><img src="${esc(img.src)}" alt="${esc(img.title)}" loading="lazy"></figure>`);
-      card.dataset.wfile = img.file || ""; card.dataset.wq = q;
-    } catch { /* pas d'image, pas de drame */ }
+      card.insertAdjacentHTML("afterbegin", `<figure class="ref-img emoji" aria-hidden="true"><span>${emojiFor(r)}</span></figure>`);
+      return;
+    }
+    card.classList.add("has-img"); card._img = img;
+    card.insertAdjacentHTML("afterbegin", `<figure class="ref-img"><img src="${esc(img.src)}" alt="${esc(img.title)}" loading="lazy"></figure>`);
+    card.dataset.wfile = img.file || ""; card.dataset.wq = q;
   }
   async function loadCredit(card) {
     const file = card.dataset.wfile, box = card.querySelector(".credit");
     if (!file || !box || box.dataset.done) return;
     box.dataset.done = "1";
-    const pre = IMGS[card.dataset.wq];
+    const pre = card._img || IMGS[card.dataset.wq];
     if (pre && pre.url) {
       box.innerHTML = `📷 Photo : ${esc(pre.artist || "auteur·rice inconnu·e")} · ${esc(pre.license || "licence libre")} — <a href="${esc(pre.url)}" target="_blank" rel="noopener">Wikimedia Commons</a>`;
       return;
@@ -263,6 +272,16 @@
     root.querySelectorAll(".ref:not([data-wi])").forEach((c) => { c.dataset.wi = "1"; imgObserver ? imgObserver.observe(c) : loadWikiImg(c); });
   }
 
+  // GIF fixé : inséré directement (chargement différé natif), sans attendre ni appeler l'API
+  function gifBoxHTML(r) {
+    if (r.gimg && !gifKw[r.id]) {
+      return `<div class="gif-box" data-gif="${r.id}" data-on="1"><img src="${esc(r.gimg)}" alt="${esc(r.q)}" loading="lazy">` +
+        `<button class="gif-next" data-act="nextgif" aria-label="Voir d'autres GIF">🔄 autres</button>` +
+        (r.cat.gif ? `<button class="gif-kw" data-act="gifkw" aria-label="Changer le mot-clé du GIF">🔎 ${esc(gifQuery(r))}</button>` : "") + `</div>`;
+    }
+    return r.cat.gif && giphyKey ? `<div class="gif-box" data-gif="${r.id}"><div class="gif-skel">✨ Chargement du GIF…</div></div>` : "";
+  }
+
   function cardHTML(r, opts = {}) {
     const t = opts.terms;
     const on = favs.has(r.id);
@@ -275,7 +294,7 @@
       <blockquote>${highlight(r.q, t)}</blockquote>
       <div class="meta"><strong>${highlight(r.s, t)}</strong>${year}${r.w ? `<br>${highlight(r.w, t)}` : ""}</div>
       ${r.n ? `<div class="note">${r.cat.gif ? "📲 " : "💡 "}${highlight(r.n, t)}</div>` : ""}
-      ${r.cat.gif && giphyKey ? `<div class="gif-box" data-gif="${r.id}"><div class="gif-skel">✨ Chargement du GIF…</div></div>` : ""}
+      ${gifBoxHTML(r)}
       <div class="actions">
         <button class="act heart ${on ? "on" : ""}" data-act="fav" aria-pressed="${on}" aria-label="${on ? "Retirer des favoris" : "Ajouter aux favoris"}"><span class="h">${on ? "💖" : "🤍"}</span>${on ? "Adorée" : "J'adore"}</button>
         ${r.cat.gif
