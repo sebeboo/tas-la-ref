@@ -458,3 +458,9 @@ body {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .hero::after { top: 6px; }
+
+/* --- Motifs : treillis rose sur les catégories, léopard sur le héros --- */
+.cat { background: url("../img/camo.svg") 0 0 / 200px auto, var(--c, var(--grad)); }
+.cats .cat:nth-child(even) { background-position: 90px 60px, 0 0; }
+.hero { background: url("../img/leopard.svg") 0 0 / 150px auto, var(--grad); }
+.cat-head { background: url("../img/leopard.svg") 0 0 / 150px auto, var(--c, var(--grad)); }

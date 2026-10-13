@@ -126,7 +126,7 @@
     const catBadge = opts.showCat ? `<a class="badge" href="#/cat/${r.cat.id}">${r.cat.emoji} ${esc(r.cat.nom)}</a>` : "";
     const vf = r.vf ? `<span class="badge vf">VF</span>` : "";
     const year = r.y ? ` · ${esc(r.y)}` : "";
-    const mom = r.moment ? `<span class="badge moment-badge">📍 Moment culte</span>` : "";
+    const mom = r.moment ? `<span class="badge moment-badge">${r.cat.id === "chansons" ? "🎶 Tube culte" : "📍 Moment culte"}</span>` : "";
     return `<article class="ref${r.moment ? " moment" : ""}" data-id="${r.id}">
       <div class="badges">${catBadge}${vf}${mom}</div>
       <blockquote>${highlight(r.q, t)}</blockquote>
@@ -391,7 +391,7 @@
   }
 
   function viewQuiz(mode) {
-    const pool = mode === "all" ? ALL : (CATS.find((c) => c.id === mode) || {}).items;
+    const pool = (mode === "all" ? ALL : (CATS.find((c) => c.id === mode) || {}).items || []).filter((r) => !r.moment); // les « moments » contiennent souvent la réponse
     if (!pool || !pool.length) return viewQuizMenu();
     const questions = shuffle(pool).slice(0, QUIZ_LEN).map((r) => {
       const same = r.cat.items; // leurres de la même catégorie, plus crédibles

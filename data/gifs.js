@@ -14,7 +14,7 @@ window.TALR_DATA.push({
     ["Évidemment, elle va marcher beaucoup moins bien !", "Le Corniaud", "Bourvil", 1965, "Quand ton téléphone tombe… encore.", "le corniaud bourvil 2cv"],
     ["Tea for two ?", "La Grande Vadrouille", "Bourvil & Louis de Funès", 1966, "Pour proposer une pause goûter.", "grande vadrouille tea for two"],
     ["Atmosphère, atmosphère !", "Hôtel du Nord", "Arletty", 1938, "Quand l'ambiance devient bizarre.", "arletty atmosphere"],
-    ["Le Willi Waller 2006 !", "Les Têtes à claques", "Web-série québécoise", 2006, "Pour présenter une invention inutile.", "tetes a claques"],
+    ["Le Willi Waller 2006 des Têtes à claques", "Les Têtes à claques", "Web-série québécoise", 2006, "Pour présenter une invention inutile.", "tetes a claques"],
     ["Le mercredi, on porte du rose.", "Mean Girls (VF)", "Les Plastiques", 2004, "Le mercredi, évidemment 💖", "mean girls wednesday pink"],
     ["Ce sera tout.", "Le Diable s'habille en Prada (VF)", "Miranda Priestly", 2006, "Pour clore une discussion en reine.", "miranda priestly that's all"],
     ["Allô ! Non mais allô, quoi !", "Les Anges de la téléréalité", "Nabilla", 2013, "Quand quelqu'un pose une question évidente.", "nabilla allo"],

@@ -1,7 +1,8 @@
-/* Service worker : fonctionnement hors-ligne (cache d'abord, puis réseau) */
-const CACHE = "talr-v4";
+/* Service worker : réseau d'abord (les mises à jour arrivent tout de suite), cache en secours hors-ligne */
+const CACHE = "talr-v5";
 const FILES = [
-  "./", "./index.html", "./css/styles.css", "./js/app.js", "./manifest.webmanifest", "./icons/icon.svg", "./img/splash.jpg",
+  "./", "./index.html", "./css/styles.css", "./js/app.js", "./manifest.webmanifest", "./icons/icon.svg",
+  "./img/splash.jpg", "./img/camo.svg", "./img/leopard.svg",
   "./data/cinema.js", "./data/series-humour.js", "./data/chansons.js", "./data/tele.js",
   "./data/internet.js", "./data/pubs.js", "./data/dessins-animes.js", "./data/gifs.js"
 ];
@@ -14,11 +15,9 @@ self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
   if (new URL(e.request.url).origin !== location.origin) return; // API Giphy, polices… : réseau direct
   e.respondWith(
-    caches.match(e.request).then((hit) => hit || fetch(e.request).then((res) => {
-      if (res.ok) {
-        const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy));
-      }
+    fetch(e.request).then((res) => {
+      if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); }
       return res;
-    }).catch(() => caches.match("./index.html")))
+    }).catch(() => caches.match(e.request).then((hit) => hit || caches.match("./index.html")))
   );
 });
