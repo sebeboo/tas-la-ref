@@ -1,8 +1,8 @@
 /* Service worker : réseau d'abord (les mises à jour arrivent tout de suite), cache en secours hors-ligne */
-const CACHE = "talr-v12";
+const CACHE = "talr-v13";
 const FILES = [
   "./", "./index.html", "./css/styles.css", "./js/app.js", "./manifest.webmanifest", "./icons/icon.svg",
-  "./img/splash.jpg", "./img/camo.svg", "./img/leopard.svg",
+  "./img/splash.jpg", "./img/camo.svg", "./img/leopard.svg", "./img/chouchou.png",
   "./data/cinema.js", "./data/series-humour.js", "./data/chansons.js", "./data/tele.js",
   "./data/internet.js", "./data/pubs.js", "./data/dessins-animes.js", "./data/gifs.js", "./data/images.js"
 ];
