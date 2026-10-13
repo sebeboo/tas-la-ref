@@ -1,10 +1,10 @@
 /* Service worker : réseau d'abord (les mises à jour arrivent tout de suite), cache en secours hors-ligne */
-const CACHE = "talr-v13";
+const CACHE = "talr-v14";
 const FILES = [
   "./", "./index.html", "./css/styles.css", "./js/app.js", "./manifest.webmanifest", "./icons/icon.svg",
   "./img/splash.jpg", "./img/camo.svg", "./img/leopard.svg", "./img/chouchou.png",
   "./data/cinema.js", "./data/series-humour.js", "./data/chansons.js", "./data/tele.js",
-  "./data/internet.js", "./data/pubs.js", "./data/dessins-animes.js", "./data/gifs.js", "./data/images.js"
+  "./data/internet.js", "./data/pubs.js", "./data/dessins-animes.js", "./data/gifs.js", "./data/images.js", "./data/aliases.js"
 ];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", (e) => {

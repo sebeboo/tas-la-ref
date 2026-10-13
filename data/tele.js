@@ -73,11 +73,11 @@ window.TALR_DATA.push({
     ["Je vous ai compris !", "Discours d'Alger", "Charles de Gaulle", 1958, "La célèbre phrase de De Gaulle à Alger, volontairement ambiguë. Pour une réponse qui contente tout le monde."],
     ["Vive le Québec libre !", "Discours de Montréal", "Charles de Gaulle", 1967, "Le cri de De Gaulle au balcon de Montréal, qui a provoqué une crise diplomatique. Pour un enthousiasme incontrôlé."],
     ["Nous sommes en guerre.", "Allocution télévisée", "Emmanuel Macron, début du confinement", 2020, "La phrase martelée par Emmanuel Macron pour annoncer le confinement. Pour déclarer la guerre aux moustiques."],
-    ["Je me retire de la vie politique.", "Soir du 1er tour", "Lionel Jospin", 2002, "Lionel Jospin, éliminé au premier tour de 2002. Pour une sortie définitive (d'un groupe WhatsApp)."],
+    ["J'assume pleinement la responsabilité de cet échec et j'en tire les conclusions en me retirant de la vie politique.", "Soir du 1er tour", "Lionel Jospin", 2002, "Lionel Jospin, éliminé au premier tour de 2002. Pour une sortie définitive (d'un groupe WhatsApp)."],
     ["Taisez-vous, Elkabbach !", "Imitation culte", "Georges Marchais (phrase surtout popularisée par ses imitateurs)", 1980, "Une phrase attribuée à Georges Marchais, surtout popularisée par ses imitateurs. Pour faire taire un bavard."],
     ["Le nuage de Tchernobyl s'est arrêté à la frontière.", "Le mythe du JT", "Formule ironique devenue légendaire", 1986, "Une formule ironique résumant une communication jugée rassurante à l'excès en 1986. Pour un déni absurde."],
     // --- Sport à la télé ---
-    ["Après avoir vu ça, on peut mourir tranquilles.", "Finale de la Coupe du monde", "Thierry Roland", 1998, "Thierry Roland, ému, après la victoire des Bleus en 1998. Après un moment parfait."],
+    ["Je crois qu'après avoir vu ça, on peut mourir tranquille. Enfin, le plus tard possible, mais on peut.", "Finale de la Coupe du monde", "Thierry Roland", 1998, "Thierry Roland, ému, après la victoire des Bleus en 1998. Après un moment parfait."],
     ["Et un, et deux, et trois zéro !", "Coupe du monde 1998", "Le chant de tout un pays", 1998, "Le chant de la victoire 3-0 contre le Brésil en finale de 1998. Pour fêter une victoire écrasante."],
     ["Allez les petits !", "Tournoi des Cinq Nations", "Roger Couderc", 1960, "Roger Couderc, commentateur de rugby passionné, encourage le XV de France. Pour encourager une équipe."],
     ["Je veux épouser Estelle.", "Interview d'après-match", "Raymond Domenech, après l'élimination à l'Euro", 2008, "Raymond Domenech demande sa compagne en mariage en direct… juste après l'élimination des Bleus. Pour changer de sujet après un échec."],

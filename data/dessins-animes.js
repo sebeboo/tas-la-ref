@@ -10,8 +10,8 @@ window.TALR_DATA.push({
   refs: [
     // --- Disney & Pixar (VF) ---
     ["Hakuna matata, quelle phrase magnifique !", "Le Roi lion (VF)", "Timon & Pumbaa", 1994, "« Hakuna matata » veut dire « pas de soucis » en swahili. La philosophie de Timon et Pumbaa, pour dédramatiser.", "", "https://media.giphy.com/media/kb4zAXlPX2t4e8AxVM/200w.webp", "https://giphy.com/gifs/disneyonbroadway-kb4zAXlPX2t4e8AxVM"],
-    ["Souviens-toi de qui tu es.", "Le Roi lion (VF)", "Mufasa à Simba", 1994, "Mufasa apparaît dans les nuages pour guider Simba. Pour redonner confiance à un·e ami·e."],
-    ["Ah oui, le passé peut faire mal. Mais à mon avis, on peut soit le fuir, soit tout en apprendre.", "Le Roi lion (VF)", "Rafiki", 1994, "Rafiki donne une leçon à Simba… après lui avoir tapé sur la tête. Pour tourner la page d'une rupture."],
+    ["N'oublie pas qui tu es.", "Le Roi lion (VF)", "Mufasa à Simba", 1994, "Mufasa apparaît dans les nuages pour guider Simba. Pour redonner confiance à un·e ami·e."],
+    ["Eh oui, le passé c'est douloureux. Mais à mon sens on peut soit le fuir, soit tout en apprendre.", "Le Roi lion (VF)", "Rafiki", 1994, "Rafiki donne une leçon à Simba… après lui avoir tapé sur la tête. Pour tourner la page d'une rupture."],
     ["Je voudrais déjà être roi !", "Le Roi lion (VF)", "Simba (chanson)", 1994, "Le jeune Simba rêve d'être roi au plus vite. Pour l'impatience de grandir (ou d'avoir 18 ans)."],
     ["Libérée, délivrée !", "La Reine des neiges (VF)", "Elsa", 2013, "La chanson qu'aucun parent n'a pu éviter en 2014, chantée par Anaïs Delva en VF.", "", "https://media.giphy.com/media/6ym6xK7Omq9Ak/200w.webp", "https://giphy.com/gifs/frozen-movie-disney-6ym6xK7Omq9Ak"],
     ["Je suis Olaf et j'aime les gros câlins !", "La Reine des neiges (VF)", "Olaf", 2013, "Le bonhomme de neige qui rêve de l'été. Pour réclamer un câlin."],
@@ -42,7 +42,7 @@ window.TALR_DATA.push({
     ["On ne parle pas de Bruno", "Encanto (VF)", "La famille Madrigal", 2021, "La famille Madrigal évite de parler de l'oncle aux prédictions inquiétantes. Pour un sujet tabou en famille."],
     ["📍 Dans Coco, Miguel chante « Ne m'oublie pas » à son arrière-grand-mère… et tout le monde pleure", "Coco (VF)", "Héctor & Miguel", 2017],
     // --- DreamWorks & autres (VF) ---
-    ["Les ogres, c'est comme les oignons.", "Shrek (VF)", "Shrek à l'Âne", 2001, "Shrek explique qu'il a plusieurs couches, comme les oignons. Pour dire que tu es plus complexe qu'il n'y paraît.", "", "https://media.giphy.com/media/kwafZfFxw8WnC/200w.webp", "https://giphy.com/gifs/shrek-kwafZfFxw8WnC"],
+    ["Les ogres… sont comme les oignons !", "Shrek (VF)", "Shrek à l'Âne", 2001, "Shrek explique qu'il a plusieurs couches, comme les oignons. Pour dire que tu es plus complexe qu'il n'y paraît.", "", "https://media.giphy.com/media/kwafZfFxw8WnC/200w.webp", "https://giphy.com/gifs/shrek-kwafZfFxw8WnC"],
     ["On est bientôt arrivés ?", "Shrek 2 (VF)", "L'Âne, en boucle", 2004, "L'Âne pose la question en boucle pendant le trajet. Pour tout long voyage en voiture.", "", "https://media.giphy.com/media/V7jkATiqn3mRie2LI2/200w.webp", "https://giphy.com/gifs/lunch-tre-instagram-shrek-viral-V7jkATiqn3mRie2LI2"],
     ["Il n'y a pas d'ingrédient secret.", "Kung Fu Panda (VF)", "M. Ping", 2008, "Le père de Po révèle que le secret de sa soupe, c'est de croire en soi. Pour rappeler que le talent se travaille."],
     ["Kirikou n'est pas grand, mais il est vaillant !", "Kirikou et la Sorcière", "La chanson du film", 1998, "Le petit garçon courageux du film de Michel Ocelot. Pour une petite taille, mais un grand cœur."],
@@ -88,7 +88,7 @@ window.TALR_DATA.push({
     ["Hula hoop, barbatruc !", "Barbapapa", "Barbapapa", 1974, "La formule de Barbapapa avant de se transformer. Pour une solution ingénieuse."],
     ["📍 Casimir prépare son gloubi-boulga, un mélange improbable de confiture, de banane, de moutarde et de saucisse", "L'Île aux enfants", "La recette de Casimir", 1974],
     ["Pourquoi faire simple quand on peut faire compliqué ?", "Les Shadoks", "La devise des Shadoks", 1968, "La devise des Shadoks, créés par Jacques Rouxel. Pour un plan inutilement complexe."],
-    ["En essayant continuellement, on finit par réussir. Donc : plus ça rate, plus on a de chances que ça marche.", "Les Shadoks", "Logique shadok", 1968, "La logique imparable des Shadoks. Pour justifier un énième essai."],
+    ["Ce n'est qu'en essayant continuellement que l'on finit par réussir… Plus ça rate, plus on a de chances que ça marche.", "Les Shadoks", "Logique shadok", 1968, "La logique imparable des Shadoks. Pour justifier un énième essai."],
     ["Ga, Bu, Zo, Meu", "Les Shadoks", "Les quatre mots du langage shadok", 1968, "Les quatre mots du langage shadok. Pour une conversation incompréhensible."],
     ["Heidi, petite fille des montagnes", "Heidi", "Le générique", 1979, "Le générique de la petite orpheline des Alpes suisses. Pour une envie de montagne."],
     // --- Club Dorothée & chansons pour enfants ---
@@ -103,7 +103,7 @@ window.TALR_DATA.push({
     ["Par Toutatis !", "Astérix", "Le juron gaulois", 1959, "Le juron des Gaulois. Pour une surprise."],
     ["Le ciel va nous tomber sur la tête !", "Astérix", "La seule crainte des Gaulois", 1959, "La seule chose que les Gaulois redoutent. Pour une peur exagérée."],
     ["Le pudding à l'arsenic", "Astérix et Cléopâtre", "Film d'animation", 1968, "Le gâteau empoisonné du dessin animé Astérix et Cléopâtre. Pour un gâteau raté."],
-    ["Il nous faut le laissez-passer A38.", "Les Douze Travaux d'Astérix", "La maison qui rend fou", 1976, "L'épreuve de la « maison qui rend fou », satire de l'administration. Pour toute démarche administrative."],
+    ["Nous devons obtenir le laissez-passer A38.", "Les Douze Travaux d'Astérix", "Astérix", 1976, "L'épreuve de la « maison qui rend fou », satire de l'administration. Pour toute démarche administrative."],
     ["La maison qui rend fou", "Les Douze Travaux d'Astérix", "L'administration à son meilleur", 1976, "Le bâtiment où Astérix doit obtenir un formulaire impossible. Pour décrire la préfecture."],
     // --- Tintin & BD franco-belge ---
     ["Mille millions de mille sabords !", "Les Aventures de Tintin", "Le capitaine Haddock", "", "Le juron préféré du capitaine Haddock. Pour exprimer ta colère.", "", "https://media.giphy.com/media/udi51hfbLiYo0/200w.webp", "https://giphy.com/gifs/animation-pub-tintin-udi51hfbLiYo0"],

@@ -39,8 +39,44 @@
     });
   });
 
-  let favs = new Set(store.get("favs", []).filter((id) => BY_ID.has(id)));
-  const saveFavs = () => store.set("favs", [...favs]);
+  /* ---------- Favoris permanents ----------
+     - localStorage + demande de stockage persistant au navigateur
+     - anciens identifiants (refs corrigées) retrouvés via data/aliases.js
+     - citation + source mémorisées : une ref corrigée plus tard est retrouvée par ressemblance
+     - un favori introuvable n'est jamais effacé (il pourra être retrouvé par une version future) */
+  const ALIAS = window.TALR_ALIASES || {};
+  const srcKey = (t) => norm(String(t).replace(/\s*\(VF\)/g, "").split(" — ")[0]);
+  const wset = (t) => new Set(norm(t).split(/[^a-z0-9]+/).filter((x) => x.length > 2));
+  function findById(id) { let k = id, n = 0; while (!BY_ID.has(k) && ALIAS[k] && n++ < 20) k = ALIAS[k]; return BY_ID.has(k) ? k : null; }
+  function findByText(m) {
+    const cat = CATS.find((c) => c.id === m.c); if (!cat || !m.q) return null;
+    const qw = wset(m.q); let best = null, bestSc = 0;
+    for (const r of cat.items) {
+      const rw = wset(r.q), inter = [...qw].filter((x) => rw.has(x)).length;
+      const sc = inter / Math.max(1, new Set([...qw, ...rw]).size) + (srcKey(r.s) === srcKey(m.s) ? 0.3 : 0);
+      if (sc > bestSc) { bestSc = sc; best = r; }
+    }
+    return best && bestSc >= 0.55 ? best.id : null;
+  }
+  let favMeta = store.get("favsMeta", {});
+  const favOrphans = [];
+  let favs = new Set();
+  for (const id of store.get("favs", [])) {
+    const found = findById(id) || (favMeta[id] && findByText(favMeta[id]));
+    if (found) { favs.add(found); if (found !== id && favMeta[id]) { favMeta[found] = favMeta[id]; delete favMeta[id]; } }
+    else favOrphans.push(id); // gardé précieusement, pas jeté
+  }
+  const metaOf = (r) => ({ c: r.cat.id, s: r.s, q: r.q.slice(0, 160) });
+  favs.forEach((id) => { if (!favMeta[id]) favMeta[id] = metaOf(BY_ID.get(id)); });
+  function saveFavs() {
+    store.set("favs", [...favs, ...favOrphans]);
+    const keep = {}; [...favs, ...favOrphans].forEach((id) => { if (favMeta[id]) keep[id] = favMeta[id]; });
+    favMeta = keep; store.set("favsMeta", favMeta);
+  }
+  function askPersistence() {
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persisted().then((p) => p || navigator.storage.persist()).catch(() => {}); } catch { /* non pris en charge */ }
+  }
+  saveFavs(); if (favs.size) askPersistence();
 
   /* ---------- Rendu d'une carte ---------- */
   function highlight(text, terms) {
@@ -282,6 +318,8 @@
     return r.cat.gif && giphyKey ? `<div class="gif-box" data-gif="${r.id}"><div class="gif-skel">✨ Chargement du GIF…</div></div>` : "";
   }
 
+  const nb = (h) => String(h).replace(/ ([!?;:»])/g, "\u00A0$1").replace(/« /g, "«\u00A0");
+
   function cardHTML(r, opts = {}) {
     const t = opts.terms;
     const on = favs.has(r.id);
@@ -291,9 +329,9 @@
     const mom = r.moment ? `<span class="badge moment-badge">${r.cat.id === "chansons" ? "🎶 Tube culte" : "📍 Moment culte"}</span>` : "";
     return `<article class="ref${r.moment ? " moment" : ""}" data-id="${r.id}">
       <div class="badges">${catBadge}${vf}${mom}</div>
-      <blockquote>${highlight(r.q, t)}</blockquote>
+      <blockquote>${nb(highlight(r.q, t))}</blockquote>
       <div class="meta"><strong>${highlight(r.s, t)}</strong>${year}${r.w ? `<br>${highlight(r.w, t)}` : ""}</div>
-      ${r.n ? `<div class="note">${r.cat.gif ? "📲 " : "💡 "}${highlight(r.n, t)}</div>` : ""}
+      ${r.n ? `<div class="note">${r.cat.gif ? "📲 " : "💡 "}${nb(highlight(r.n, t))}</div>` : ""}
       ${gifBoxHTML(r)}
       <div class="actions">
         <button class="act heart ${on ? "on" : ""}" data-act="fav" aria-pressed="${on}" aria-label="${on ? "Retirer des favoris" : "Ajouter aux favoris"}"><span class="h">${on ? "💖" : "🤍"}</span>${on ? "Adorée" : "J'adore"}</button>
@@ -322,7 +360,7 @@
       list.insertAdjacentHTML("beforeend", next.map((r) => cardHTML(r, opts)).join(""));
       observeGifs(list); observeImgs(list);
       shown += next.length;
-      if (shown < refs.length) { moreBtn.textContent = `Voir plus de refs ✨ (${refs.length - shown})`; if (!moreBtn.isConnected) container.appendChild(moreBtn); }
+      if (shown < refs.length) { moreBtn.textContent = `Encore des refs, j'en veux ✨ (${refs.length - shown})`; if (!moreBtn.isConnected) container.appendChild(moreBtn); }
       else moreBtn.remove();
     };
     moreBtn.addEventListener("click", step);
@@ -357,6 +395,7 @@
     "Cherche, et tu trouveras (peut-être) 💁",
     "« Allô », « shampooing »… tu connais la suite 📞",
   ];
+  const TRENDS = ["blanquette", "allô", "Kaamelott", "Afida", "Audiard", "Piaf", "Shrek", "Macron", "Goldman", "OSS 117"];
   const CAT_SASS = {
     cinema: "Pour celles et ceux qui citent Audiard au brunch 🥂",
     series: "Le binge-watching, mais avec de la répartie 📺",
@@ -388,7 +427,7 @@
       <p class="sass">${pick(SASS_TAGS)}</p>
       <section class="hero">
         <span class="badge">🌟 La ref du jour — à placer avant midi</span>
-        <blockquote>${esc(r.q)}</blockquote>
+        <blockquote${r.moment ? ' class="moment-q"' : ""}>${nb(esc(r.q))}</blockquote>
         <div class="meta"><strong style="color:#fff">${esc(r.s)}</strong>${r.y ? " · " + esc(r.y) : ""}${r.w ? "<br>" + esc(r.w) : ""}</div>
         <div class="actions" data-id="${r.id}">
           <button class="act heart ${favs.has(r.id) ? "on" : ""}" data-act="fav"><span class="h">${favs.has(r.id) ? "💖" : "🤍"}</span>${favs.has(r.id) ? "Adorée" : "J'adore"}</button>
@@ -404,15 +443,20 @@
       <div class="cats">${CATS.map(catTile).join("")}
         <a class="cat wide" href="#/quiz" style="--c:linear-gradient(135deg,#b620e0,#ff1493)"><span class="emo">🎯</span><div><h3>Quiz : t'as vraiment la ref ?</h3><p>10 questions pour prouver que tu règnes sur les refs 👑</p></div></a>
       </div>
-      <div class="h-section"><h2>Les refs que t'es censé·e connaître 🙄</h2><small>au hasard</small></div>
+      <div class="h-section"><h2>Les refs que t'es censé·e connaître 🙄</h2><small><button class="linkbtn repick" id="repick" type="button">🔄 repioche</button></small></div>
       <div id="picks"></div>
       <p class="footer-note">Fait avec 💖, des paillettes et zéro modestie</p>`;
     renderList($("#picks"), shuffle(ALL).slice(0, 6), { showCat: true });
+    $("#repick").addEventListener("click", (e) => {
+      burst(e.clientX, e.clientY); const box = $("#picks"); box.innerHTML = "";
+      renderList(box, shuffle(ALL).slice(0, 6), { showCat: true }); toast(pick(["Nouvelle fournée, servie chaude 🔥", "Tiens, des refs fraîches 💅", "Allez, encore une chance 🙄"]));
+    });
   }
 
   function viewExplore() {
     view.innerHTML = `
       <p class="lead">Fais ton choix, on n'a pas toute la journée 💅</p>
+      <div class="trend"><span>🔥 Les gens de goût cherchent :</span>${TRENDS.map((t) => `<a class="chip" href="#/search/${encodeURIComponent(t)}">${esc(t)}</a>`).join("")}</div>
       <div class="cats">${CATS.map(catTile).join("")}</div>
       <div class="h-section"><h2>Toutes les refs, rien que ça</h2><small>${ALL.length}</small></div>
       <div id="all"></div>`;
@@ -442,7 +486,7 @@
       <div class="toolbar" id="tb">
         ${Object.entries(SORTS).map(([k, v]) => `<button class="chip" data-sort="${k}">${v.label}</button>`).join("")}
         ${hasVF ? `<button class="chip" data-filter="fr">🇫🇷 VO française</button><button class="chip" data-filter="vf">🎙️ VF cultes</button>` : ""}
-        <a class="chip" href="#/quiz/${c.id}" style="text-decoration:none">🎯 Quiz</a>
+        ${c.gif ? "" : `<a class="chip" href="#/quiz/${c.id}" style="text-decoration:none">🎯 Quiz</a>`}
       </div>
       ${c.gif ? gifPanelHTML() : ""}
       <div id="catList"></div>`;
@@ -546,6 +590,24 @@
       return;
     }
     renderList($("#fv"), list, { showCat: true });
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !navigator.standalone;
+    $("#fv").insertAdjacentHTML("afterend", `<div class="backup">
+      <button class="btn" id="backupBtn" type="button">💾 Lien de sauvegarde</button>
+      <p>Au cas où ton navigateur ferait le ménage : garde ce lien, il ressuscite tes chouchoutes partout 💅${ios ? "<br>📲 Sur iPhone, ajoute l'app à l'écran d'accueil : Safari ne pourra plus jamais les effacer." : ""}</p>
+    </div>`);
+    $("#backupBtn").addEventListener("click", async () => {
+      const url = `${location.origin}${location.pathname}#/import/${[...favs].join(".")}`;
+      if (navigator.share) { try { await navigator.share({ title: "Mes chouchoutes — T'as la ref ?", url }); return; } catch { return; } }
+      toast((await copyText(url)) ? "Lien copié. Garde-le précieusement 💾" : "Impossible de copier 🙄");
+    });
+  }
+
+  function importFavs(arg) {
+    let n = 0;
+    String(arg || "").split(".").forEach((id) => { const f = findById(id); if (f && !favs.has(f)) { favs.add(f); favMeta[f] = metaOf(BY_ID.get(f)); n++; } });
+    saveFavs(); if (n) askPersistence();
+    toast(n ? `${n} chouchoute${n > 1 ? "s" : ""} récupérée${n > 1 ? "s" : ""} 💖` : "Rien de nouveau à récupérer 💅");
+    history.replaceState(null, "", "#/favs"); viewFavs();
   }
 
   function viewRef(id) {
@@ -562,8 +624,20 @@
 
   /* ---------- Quiz ---------- */
   const QUIZ_LEN = 10;
-  const optionLabel = (r) => (r.cat.id === "chansons" && r.w ? `${r.w} — ${r.s}` : r.s);
+  const optionLabel = (r) => (r.cat.id === "chansons" ? r.w : r.s);
+  const STOP = new Set(["les", "des", "une", "the", "film", "serie", "televisee", "est", "pas", "que", "qui", "vous", "nous", "pour", "dans", "avec"]);
+  const sig = (t) => norm(t).split(/[^a-z0-9]+/).filter((w) => w.length >= 3 && !STOP.has(w));
+  // une question est jouable si elle ne contient pas déjà la réponse
+  function quizWorthy(r) {
+    if (r.moment || r.cat.gif || SLANG.test(r.s)) return false;
+    const nq = norm(r.q);
+    if (r.cat.id === "chansons") return !!r.w && !sig(r.w).some((w) => w.length >= 4 && nq.includes(w));
+    const sw = sig(cleanSrc(r.s));
+    return !sw.length || !sw.every((w) => nq.includes(w));
+  }
+  const decoyOK = (x) => !x.moment && !x.cat.gif && !SLANG.test(x.s);
 
+  const rank = (n) => (n == null ? "· jamais tenté, t'as peur ? 👀" : n >= 9 ? "· 👑 icône" : n >= 7 ? "· 💎 solide" : n >= 5 ? "· 💅 ça passe" : "· 📚 à réviser");
   function viewQuizMenu() {
     const best = store.get("best", {});
     view.innerHTML = `
@@ -573,8 +647,8 @@
       </section>
       <div class="h-section"><h2>Montre-nous ce que t'as 💅</h2></div>
       <div class="quiz-modes">
-        <button class="mode" data-q="all"><span class="emo">🌈</span><span>Toutes les catégories<small>Meilleur score : ${best.all ?? "—"}/${QUIZ_LEN}</small></span></button>
-        ${CATS.map((c) => `<button class="mode" data-q="${c.id}"><span class="emo">${c.emoji}</span><span>${esc(c.nom)}<small>Meilleur score : ${best[c.id] ?? "—"}/${QUIZ_LEN}</small></span></button>`).join("")}
+        <button class="mode" data-q="all"><span class="emo">🌈</span><span>Toutes les catégories<small>Meilleur score : ${best.all ?? "—"}/${QUIZ_LEN} ${rank(best.all)}</small></span></button>
+        ${CATS.filter((c) => !c.gif).map((c) => `<button class="mode" data-q="${c.id}"><span class="emo">${c.emoji}</span><span>${esc(c.nom)}<small>Meilleur score : ${best[c.id] ?? "—"}/${QUIZ_LEN} ${rank(best[c.id])}</small></span></button>`).join("")}
       </div>`;
     view.querySelector(".quiz-modes").addEventListener("click", (e) => {
       const b = e.target.closest("[data-q]"); if (b) location.hash = "#/quiz/" + b.dataset.q;
@@ -582,15 +656,15 @@
   }
 
   function viewQuiz(mode) {
-    const pool = (mode === "all" ? ALL : (CATS.find((c) => c.id === mode) || {}).items || []).filter((r) => !r.moment); // les « moments » contiennent souvent la réponse
+    const pool = (mode === "all" ? ALL : (CATS.find((c) => c.id === mode) || {}).items || []).filter(quizWorthy);
     if (!pool || !pool.length) return viewQuizMenu();
     const questions = shuffle(pool).slice(0, QUIZ_LEN).map((r) => {
-      const same = r.cat.items; // leurres de la même catégorie, plus crédibles
+      const same = r.cat.items.filter(decoyOK); // leurres de la même catégorie, plus crédibles
       const right = optionLabel(r);
       const wrong = [];
-      for (const x of shuffle(same)) {
+      for (const x of shuffle(same).concat(shuffle(ALL.filter((y) => decoyOK(y) && y.cat.id === r.cat.id)))) {
         const l = optionLabel(x);
-        if (norm(x.s) !== norm(r.s) && l !== right && !wrong.includes(l)) wrong.push(l);
+        if (l && norm(l) !== norm(right) && (r.cat.id === "chansons" || norm(x.s) !== norm(r.s)) && !wrong.includes(l)) wrong.push(l);
         if (wrong.length === 3) break;
       }
       return { r, right, options: shuffle([right, ...wrong]) };
@@ -602,8 +676,8 @@
       view.innerHTML = `<div class="quiz-card">
         <div class="quiz-top"><span>${q.r.cat.emoji} Question ${i + 1}/${questions.length}</span><span>💖 ${score}</span></div>
         <div class="progress"><i style="width:${(i / questions.length) * 100}%"></i></div>
-        <p class="quiz-q">« ${esc(q.r.q)} »</p>
-        <p class="quiz-ask">${q.r.cat.id === "chansons" ? "Elle vient d'où, cette chanson ? Allez." : "Alors, t'as la ref ou pas ?"}</p>
+        <p class="quiz-q">${nb("« " + esc(q.r.q) + " »")}</p>
+        <p class="quiz-ask">${q.r.cat.id === "chansons" ? "C'est qui qui chante ça ? 🎤 Allez." : "Alors, t'as la ref ou pas ?"}</p>
         <div class="choices">${q.options.map((o) => `<button class="choice" data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div>
         <div id="after"></div>
       </div>`;
@@ -611,8 +685,9 @@
         const b = e.target.closest(".choice"); if (!b || b.disabled) return;
         const ok = b.dataset.o === q.right;
         view.querySelectorAll(".choice").forEach((c) => { c.disabled = true; if (c.dataset.o === q.right) c.classList.add("good"); });
+        try { navigator.vibrate && navigator.vibrate(ok ? 25 : [40, 60, 40]); } catch { /* pas de vibreur */ }
         if (ok) { score++; streak++; burst(e.clientX, e.clientY); if (streak === 3) toast("3 d'affilée. Tu chauffes 🔥"); if (streak === 5) toast("5 d'affilée ?! On appelle les pompiers 🚒"); } else { streak = 0; b.classList.add("bad"); }
-        $("#after").innerHTML = `<p class="meta" style="margin:14px 0 0">${ok ? "✅ " + pick(SASS_OK) : "❌ " + pick(SASS_KO)} <strong>${esc(q.r.s)}</strong>${q.r.y ? " · " + esc(q.r.y) : ""}${q.r.w ? " — " + esc(q.r.w) : ""}</p>
+        $("#after").innerHTML = `<p class="meta" style="margin:14px 0 0">${ok ? "✅ " + pick(SASS_OK) : "❌ " + pick(SASS_KO)} <strong>${esc(q.r.cat.id === "chansons" ? q.r.w + " — « " + q.r.s + " »" : q.r.s)}</strong>${q.r.y ? " · " + esc(q.r.y) : ""}${q.r.cat.id !== "chansons" && q.r.w ? " — " + esc(q.r.w) : ""}</p>
           <div class="center"><button class="btn" id="next">${i + 1 < questions.length ? "Next, chéri·e →" : "Le verdict 👀"}</button></div>`;
         $("#next").addEventListener("click", () => { i++; i < questions.length ? draw() : end(); });
       });
@@ -629,16 +704,24 @@
         <p class="score-title">${title}</p>
         ${isBest ? `<p class="meta">🎉 Nouveau record. Évidemment.</p>` : ""}
         <button class="btn" id="replay">Revanche 🔁</button>
+        <button class="btn" id="brag">📣 Balance ton score</button>
         <a class="btn ghost" href="#/quiz">Changer de thème</a>
       </div>`;
       $("#replay").addEventListener("click", () => viewQuiz(mode));
+      $("#brag").addEventListener("click", async () => {
+        const theme = mode === "all" ? "toutes catégories" : (CATS.find((c) => c.id === mode) || {}).nom;
+        const text = `J'ai fait ${score}/${questions.length} au quiz « ${theme} » de T'as la ref ? — ${title} Et toi, t'as la ref ? 💅`;
+        const url = location.origin + location.pathname;
+        if (navigator.share) { try { await navigator.share({ title: "T'as la ref ?", text, url }); } catch { /* annulé */ } }
+        else toast((await copyText(text + " " + url)) ? "Score copié. Va narguer tes potes 😏" : "Impossible de copier 🙄");
+      });
       if (pct >= .6) { const r = view.getBoundingClientRect(); for (let k = 0; k < 4; k++) setTimeout(() => burst(r.left + Math.random() * r.width, 160 + Math.random() * 200), k * 220); }
     };
     draw();
   }
 
   /* ---------- Actions sur les cartes ---------- */
-  const refText = (r) => `« ${r.q} » — ${r.s}${r.y ? " (" + r.y + ")" : ""}${r.w ? ", " + r.w : ""}\n#TasLaRef`;
+  const refText = (r) => `${r.moment ? r.q : "« " + r.q + " »"} — ${r.s}${r.y ? " (" + r.y + ")" : ""}${r.w ? ", " + r.w : ""}\n#TasLaRef`;
 
   async function copyText(t) {
     try { await navigator.clipboard.writeText(t); return true; }
@@ -658,7 +741,8 @@
     const act = btn.dataset.act;
     if (act === "fav") {
       const on = !favs.has(r.id);
-      on ? favs.add(r.id) : favs.delete(r.id); saveFavs();
+      if (on) { favs.add(r.id); favMeta[r.id] = metaOf(r); askPersistence(); } else { favs.delete(r.id); delete favMeta[r.id]; }
+      saveFavs();
       document.querySelectorAll(`[data-id="${r.id}"] [data-act="fav"]`).forEach((b) => {
         b.classList.toggle("on", on); b.setAttribute("aria-pressed", on);
         b.innerHTML = `<span class="h">${on ? "💖" : "🤍"}</span>${on ? "Adorée" : "J'adore"}`;
@@ -680,7 +764,8 @@
       box.innerHTML = `<div class="gif-skel">✨ On cherche mieux…</div>`; loadGif(box);
     } else if (act === "sharegif") {
       const st = gifState.get(r.id);
-      if (st && st.list.length) shareLink(st.list[st.i].page, `« ${r.q} » #TasLaRef`);
+      const page = st && st.list.length ? st.list[st.i].page : r.gpage;
+      if (page) shareLink(page, `« ${r.q} » #TasLaRef`);
       else toast("Patience, le GIF se refait une beauté ⏳");
     } else if (act === "copy") {
       toast((await copyText(refText(r))) ? pick(SASS_COPY) : "Impossible de copier 🙄");
@@ -751,7 +836,8 @@
   $("#backBtn").addEventListener("click", () => (history.length > 1 ? history.back() : (location.hash = "#/")));
 
   function route() {
-    const h = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
+    let h = location.hash.replace(/^#\/?/, "");
+    try { h = decodeURIComponent(h); } catch { /* adresse mal formée : on garde le texte brut */ }
     const [name, ...rest] = h.split("/");
     const arg = rest.join("/");
     let tab = "home";
@@ -763,6 +849,7 @@
       case "cat": tab = "explore"; viewCat(arg); break;
       case "search": tab = "explore"; if (input.value.trim() !== arg) { input.value = arg; clearBtn.hidden = !arg; } viewSearch(arg); break;
       case "favs": tab = "favs"; viewFavs(); break;
+      case "import": tab = "favs"; importFavs(arg); break;
       case "quiz": tab = "quiz"; arg ? viewQuiz(arg) : viewQuizMenu(); break;
       case "ref": tab = ""; viewRef(arg); break;
       default: viewNotFound();

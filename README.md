@@ -17,6 +17,15 @@ Chaque carte charge son GIF toute seule (🔄 pour passer au suivant, 💌 pour 
 ## Images libres de droits
 Les vignettes viennent de **Wikipédia en français**, qui n'héberge que des images sous licence libre (Wikimedia Commons). Elles sont pré-calculées dans `data/images.js` avec l'auteur·rice et la licence, affichés dans « ☕ Le tea ». Une ref ajoutée plus tard va chercher son image en direct (une requête à la fois). Les films n'ont souvent pas d'image : leurs affiches ne sont pas libres.
 
+## Favoris (« chouchoutes ») permanents
+- Stockés dans le navigateur (localStorage) ; l'app demande au navigateur un **stockage persistant** dès le premier favori.
+- Une ref corrigée garde ses favoris : `data/aliases.js` relie les anciens identifiants aux nouveaux (généré depuis l'historique git), et la citation + la source sont mémorisées pour retrouver la ref par ressemblance.
+- Un favori introuvable n'est jamais effacé.
+- Bouton **💾 Lien de sauvegarde** (page Chouchoutes) : un lien `#/import/…` qui restaure les favoris sur n'importe quel appareil.
+- Sur iPhone, ajouter l'app à l'écran d'accueil empêche Safari d'effacer les données d'un site non visité depuis 7 jours.
+
+Après avoir modifié des citations : `python tools/generer_alias.py .` (régénère `data/aliases.js` et préserve les favoris).
+
 ## Écriture inclusive
 Les textes de l'interface et les explications utilisent le point médian (« censé·e », « un·e ami·e »). Les citations, elles, restent fidèles à l'original.
 
