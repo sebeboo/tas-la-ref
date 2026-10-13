@@ -113,6 +113,10 @@ window.TALR_DATA.push({
     ["On est champions du monde !", "Finale de la Coupe du monde", "Les Bleus", 2018, "Le cri de 2018, vingt ans après la première étoile. Pour fêter une grande victoire."],
     ["Allez les Bleus !", "Équipe de France", "Le cri de ralliement", "", "Le cri de ralliement des supporters de l'équipe de France. Pour encourager."],
     ["C'est votre dernier mot ?", "Qui veut gagner des millions ?", "Jean-Pierre Foucault", 2000, "La question de Jean-Pierre Foucault avant de valider une réponse. Pour faire douter quelqu'un."],
-    ["Place à la séquence émotion…", "Télévision", "Le moment où les mouchoirs sortent", "", "Le moment des retrouvailles et des larmes, passage obligé des émissions de divertissement. Pour une scène émouvante."]
+    ["Place à la séquence émotion…", "Télévision", "Le moment où les mouchoirs sortent", "", "Le moment des retrouvailles et des larmes, passage obligé des émissions de divertissement. Pour une scène émouvante."],
+    ["J'ai rencontré des gens aux États-Unis qui étaient poubelleurs.", "La nuit nous appartient (NRJ 12)", "Afida Turner", 2011, "Afida invente les « poubelleurs » au lieu des éboueurs, avec un aplomb total. Pour tout mot inventé que tu assumes jusqu'au bout."],
+    ["Straight up to the point, j'ai été directement au point.", "Un dîner presque parfait (M6)", "Afida Turner, invitée exceptionnelle", 2013, "Après avoir peint son plat à tajine en deux coups de pinceau, Afida explique que l'art ne demande pas de réfléchir. Pour justifier un travail bâclé… avec classe."],
+    ["📍 Afida Turner débarque par surprise en finale de LOL : qui rit, sort ! et transforme la comptine de la barbichette en tube", "LOL : qui rit, sort ! (saison 4)", "Afida Turner face à Audrey Lamy et Redouane Bougheraba", 2024, "Elle affirme avoir tout improvisé. La « Barbichette Song » cumule ensuite plus d'un million d'écoutes sur Spotify."],
+    ["📍 Lesly, candidate de la deuxième saison de Loft Story, deviendra plus tard Afida Turner", "Loft Story (saison 2)", "Afida Turner", 2002, "Le début de la légende : avant de devenir la belle-fille de Tina Turner, Afida s'est fait connaître dans le Loft."]
   ]
 });

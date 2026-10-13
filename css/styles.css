@@ -562,3 +562,22 @@ body {
   .splash-emojis { z-index: 2; }
   .splash-emojis span { --s: 44px; }
 }
+
+/* --- Brume rose qui dérive derrière le contenu (remplace les pétales) --- */
+.fog { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.fog i {
+  position: absolute; width: 80vmax; height: 55vmax; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, .55), rgba(255, 255, 255, .18) 55%, rgba(255, 255, 255, 0));
+  filter: blur(26px); opacity: .85; will-change: transform;
+  animation: drift var(--t, 40s) ease-in-out var(--w, 0s) infinite alternate;
+}
+.fog i:nth-child(1) { left: -35vmax; top: 5vh; --t: 46s; }
+.fog i:nth-child(2) { right: -40vmax; top: 30vh; --t: 54s; --w: -12s; background: radial-gradient(closest-side, rgba(255, 214, 239, .6), rgba(255, 214, 239, 0)); }
+.fog i:nth-child(3) { left: -20vmax; bottom: -25vmax; --t: 60s; --w: -25s; background: radial-gradient(closest-side, rgba(230, 164, 255, .45), rgba(230, 164, 255, 0)); }
+.fog i:nth-child(4) { right: -30vmax; top: -30vmax; --t: 50s; --w: -6s; }
+.fog i:nth-child(5) { left: 10vw; top: 45vh; width: 60vmax; height: 40vmax; --t: 70s; --w: -35s; opacity: .55; }
+@keyframes drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(18vw, -6vh) scale(1.15); }
+  100% { transform: translate(-10vw, 8vh) scale(.95); }
+}

@@ -1,5 +1,5 @@
 /* Service worker : réseau d'abord (les mises à jour arrivent tout de suite), cache en secours hors-ligne */
-const CACHE = "talr-v6";
+const CACHE = "talr-v7";
 const FILES = [
   "./", "./index.html", "./css/styles.css", "./js/app.js", "./manifest.webmanifest", "./icons/icon.svg",
   "./img/splash.jpg", "./img/camo.svg", "./img/leopard.svg",

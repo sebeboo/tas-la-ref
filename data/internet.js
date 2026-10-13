@@ -116,6 +116,9 @@ window.TALR_DATA.push({
     ["C'est ma meuf sûre, on se dit tout.", "Verlan", "« Femme »", "", "Verlan de « femme »."],
     ["J'ai mis mon pull à l'envers toute la journée, trop teubé.", "Verlan", "« Bête »", ""],
     ["On se lave les mains et on respecte les gestes barrières !", "Confinement", "Le vocabulaire de toute une époque", 2020, "Le vocabulaire de la crise sanitaire de 2020, entré dans le langage courant."],
-    ["T'as rempli ton attestation pour aller chercher du pain ?", "Confinement", "Le formulaire le plus rempli de France", 2020, "Pendant le confinement de 2020, il fallait une attestation pour sortir."]
+    ["T'as rempli ton attestation pour aller chercher du pain ?", "Confinement", "Le formulaire le plus rempli de France", 2020, "Pendant le confinement de 2020, il fallait une attestation pour sortir."],
+    ["Je suis Afida Turner, la seule et l'unique, la garce de Paris et Los Angeles.", "Vidéo promo de Scary Movie (traduit de l'anglais)", "Afida Turner", 2026, "Afida joue une candidate de casting survoltée pour la promo du film. LA présentation de diva à reprendre en entrant en soirée."],
+    ["Après moi, arrêtez l'audition parce que vous avez affaire à la meilleure.", "Vidéo promo de Scary Movie (traduit de l'anglais)", "Afida Turner", 2026, "Zéro modestie, 100 % assurance. Pour un entretien d'embauche (à tes risques et périls)."],
+    ["Je suis la Marilyn Monroe noire.", "Vidéo promo de Scary Movie (traduit de l'anglais)", "Afida Turner", 2026, "Afida se compare aux plus grandes stars d'Hollywood. Pour un selfie très assumé."]
   ]
 });

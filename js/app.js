@@ -28,11 +28,11 @@
   const BY_ID = new Map();
   CATS.forEach((cat) => {
     cat.items = [];
-    cat.refs.forEach(([q, s, w, y, n, kw]) => {
+    cat.refs.forEach(([q, s, w, y, n, kw, gimg, gpage]) => {
       const id = cat.id + "-" + hash(q + "|" + s);
       const moment = q.startsWith("📍");
       if (moment) q = q.replace(/^📍\s*/, "");
-      const ref = { id, q, s, w: w || "", y: y || "", n: n || "", kw: kw || "", cat, moment, vf: /\(VF\)/.test(s) };
+      const ref = { id, q, s, w: w || "", y: y || "", n: n || "", kw: kw || "", gimg: gimg || "", gpage: gpage || "", cat, moment, vf: /\(VF\)/.test(s) };
       ref.hay = norm([q, s, w, y, n, cat.nom].join(" "));
       ALL.push(ref); cat.items.push(ref); BY_ID.set(id, ref);
     });
@@ -96,14 +96,28 @@
     const r = BY_ID.get(box.dataset.gif); if (!r) return;
     let st = gifState.get(r.id);
     try {
-      if (!st) { st = { list: await giphySearch(gifQuery(r)), i: 0 }; gifState.set(r.id, st); }
+      if (!st) {
+        // GIF choisi à la main : affiché sans appel à l'API (sauf si un autre mot-clé a été demandé)
+        st = r.gimg && !gifKw[r.id]
+          ? { list: [{ img: r.gimg, page: r.gpage, title: r.q }], i: 0, pinned: true }
+          : { list: await giphySearch(gifQuery(r)), i: 0 };
+        gifState.set(r.id, st);
+      }
+      if (step && st.pinned) {           // 🔄 sur un GIF fixé : on va chercher des alternatives
+        const more = (await giphySearch(gifQuery(r))).filter((g) => g.img !== r.gimg);
+        st.list = st.list.concat(more); st.pinned = false;
+      }
       if (!st.list.length) { box.innerHTML = `<div class="gif-skel">Aucun GIF trouvé 🥺</div>`; return; }
       st.i = (st.i + step + st.list.length) % st.list.length;
       const g = st.list[st.i];
       box.innerHTML = `<img src="${esc(g.img)}" alt="${esc(g.title || r.q)}">` +
-        (st.list.length > 1 ? `<button class="gif-next" data-act="nextgif" aria-label="Un autre GIF">🔄 ${st.i + 1}/${st.list.length}</button>` : "") +
+        (st.pinned ? `<button class="gif-next" data-act="nextgif" aria-label="Voir d'autres GIF">🔄 autres</button>`
+          : st.list.length > 1 ? `<button class="gif-next" data-act="nextgif" aria-label="Un autre GIF">🔄 ${st.i + 1}/${st.list.length}</button>` : "") +
         `<button class="gif-kw" data-act="gifkw" aria-label="Changer le mot-clé du GIF">🔎 ${esc(gifQuery(r))}</button>`;
-    } catch (err) { box.innerHTML = `<div class="gif-skel">${gifErr(err)}</div>`; }
+    } catch (err) {
+      if (step && st && st.list.length) { toast(gifErr(err)); return; } // on garde le GIF déjà affiché
+      box.innerHTML = `<div class="gif-skel">${gifErr(err)}<br><a href="${esc(gifUrl(r))}" target="_blank" rel="noopener">🎞️ Voir sur Giphy</a></div>`;
+    }
   }
 
   // Chargement paresseux : le GIF se charge quand la carte approche de l'écran
@@ -633,17 +647,6 @@
     if (name !== "search") scrollTo({ top: 0, behavior: "instant" });
   }
   addEventListener("hashchange", route);
-  /* ---------- Pétales de sakura ---------- */
-  if (!reduce) {
-    const box = $(".petals");
-    for (let k = 0; k < 16; k++) {
-      const p = document.createElement("span");
-      p.className = "petal";
-      p.style.cssText = `left:${Math.random() * 100}%;--s:${8 + Math.random() * 10}px;--d:${9 + Math.random() * 10}s;--w:-${Math.random() * 18}s`;
-      box.appendChild(p);
-    }
-  }
-
   /* ---------- Splash screen ---------- */
   const splash = $("#splash");
   const seen = (() => { try { return sessionStorage.getItem("talr:splash"); } catch { return null; } })();

@@ -154,6 +154,7 @@ window.TALR_DATA.push({
     ["📍 « Mon amour » : Slimane défend les couleurs de la France à l'Eurovision.", "Mon amour", "Slimane", 2024],
     ["La chenille qui redémarre", "La Chenille", "La Bande à Basile", 1986, "LA chanson des mariages et des fins de soirée. Tout le monde en file."],
     ["Coin coin coin coin", "La Danse des canards", "J.J. Lionel", 1980, "La danse des canards, incontournable des fêtes d'école et des campings."],
-    ["📍 « Stach stach » : faux boys band d'Europe de l'Est : une parodie culte du début des années 2000.", "Stach Stach", "Les Bratisla Boys", 2002]
+    ["📍 « Stach stach » : faux boys band d'Europe de l'Est : une parodie culte du début des années 2000.", "Stach Stach", "Les Bratisla Boys", 2002],
+    ["📍 « La Barbichette Song » : la comptine revisitée par Afida Turner en finale de LOL : qui rit, sort !, devenue un tube en streaming", "La Barbichette Song", "Afida Turner", 2024]
   ]
 });
