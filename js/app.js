@@ -185,7 +185,7 @@
     const ctx = contextText(r);
     return `<div class="more-info" hidden>
       ${ctx ? `<h4>☕ Le contexte</h4><p>${esc(ctx)}</p>` : ""}
-      ${links.length ? `<h4>🔗 Pour aller plus loin (légalement, on a des principes)</h4><div class="links">${links.map(([i, l, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${i} ${esc(l)}</a>`).join("")}</div>
+      ${links.length ? `<h4>🔗 Va stalker, mais légalement — on a des principes 💅</h4><div class="links">${links.map(([i, l, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${i} ${esc(l)}</a>`).join("")}</div>
       <p class="legal">Liens de recherche vers des services officiels et légaux.</p>` : ""}
       <p class="credit legal"></p>
     </div>`;
@@ -536,7 +536,11 @@
 
   function viewFavs() {
     const list = ALL.filter((r) => favs.has(r.id));
-    view.innerHTML = `<div class="h-section" style="margin-top:4px"><h2>Mes chouchoutes 💖</h2><small>${list.length}</small></div><div id="fv"></div>`;
+    view.innerHTML = `<figure class="mascot">
+        <img src="img/chouchou.png" alt="Le gardien des chouchoutes, cœur avec les mains" onerror="this.closest('figure').remove()">
+        <figcaption>${list.length ? "Tes chouchoutes sont sous ma protection. Personne n'y touche 💖" : "Rien à protéger ? Mets-moi du travail, chéri·e 😜"}</figcaption>
+      </figure>
+      <div class="h-section" style="margin-top:4px"><h2>Mes chouchoutes 💖</h2><small>${list.length}</small></div><div id="fv"></div>`;
     if (!list.length) {
       $("#fv").innerHTML = `<div class="empty"><span class="big">🤍</span>Aucune chouchoute ? T'as des standards, on respecte 💅<br>Appuie sur <b>J'adore</b> sous une ref pour la garder ici.</div>`;
       return;

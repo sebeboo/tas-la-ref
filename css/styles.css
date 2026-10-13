@@ -615,3 +615,17 @@ body {
 /* --- Sticker emoji quand il n'y a pas d'image libre --- */
 .ref-img.emoji { display: grid; place-items: center; background: linear-gradient(135deg, #ffd6ef, #f1e0ff); }
 .ref-img.emoji span { font-size: 38px; filter: drop-shadow(2px 3px 0 rgba(194, 0, 110, .25)); transform: rotate(-6deg); }
+
+/* --- Le gardien des chouchoutes : ni trop grand, ni trop petit --- */
+.mascot { display: flex; align-items: flex-end; gap: 10px; margin: 4px 0 6px; }
+.mascot img {
+  height: clamp(170px, 42vw, 230px); width: auto; flex: none;
+  filter: drop-shadow(0 0 0 #fff) drop-shadow(4px 6px 0 rgba(194, 0, 110, .3));
+  animation: bob-m 3s ease-in-out infinite;
+}
+@keyframes bob-m { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-6px) rotate(1deg); } }
+.mascot figcaption {
+  position: relative; margin-bottom: 70px; padding: 12px 14px; border-radius: 18px 18px 18px 4px;
+  background: #fff; color: var(--pink); font-weight: 700; font-size: 14px; line-height: 1.4;
+  box-shadow: var(--sticker-sm); transform: rotate(-2deg);
+}
