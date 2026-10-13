@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ff1493">
+  <meta name="description" content="T'as la ref ? — Des centaines de références cultes francophones : films, séries, chansons, télé, pubs, internet, dessins animés.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="T'as la ref ?">
+  <title>T'as la ref ?</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Splash screen -->
+  <div id="splash" class="splash" role="button" tabindex="0" aria-label="Entrer dans T'as la ref ?">
+    <img src="img/splash.jpg" alt="" class="splash-img">
+    <div class="splash-shade"></div>
+    <div class="splash-emojis" aria-hidden="true"></div>
+    <div class="splash-text">
+      <h1 class="splash-title" aria-label="T'as la ref ?"></h1>
+      <p class="splash-tag">Les refs, on les a. Et toi ? 💅</p>
+      <p class="splash-tap">Touche pour entrer ✨</p>
+    </div>
+  </div>
+
+  <div class="glitter" aria-hidden="true"></div>
+  <div class="petals" aria-hidden="true"></div>
+  <canvas id="sparkles" aria-hidden="true"></canvas>
+
+  <div class="app">
+    <header class="topbar">
+      <button class="icon-btn back" id="backBtn" aria-label="Retour" hidden>
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <a href="#/" class="logo" aria-label="Accueil T'as la ref ?">
+        <span class="logo-text">T'as la ref&nbsp;?</span><span class="logo-spark">✨</span>
+      </a>
+      <button class="icon-btn" id="randomBtn" aria-label="Une ref au hasard" title="Une ref au hasard">🎲</button>
+    </header>
+
+    <div class="searchbar" role="search">
+      <svg class="search-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <input id="search" type="search" placeholder="Balance ta ref, on juge pas… enfin si 💅" autocomplete="off" enterkeyhint="search" aria-label="Rechercher dans toutes les références">
+      <button class="clear" id="clearSearch" aria-label="Effacer la recherche" hidden>×</button>
+    </div>
+
+    <main id="view" tabindex="-1"></main>
+  </div>
+
+  <nav class="tabbar" aria-label="Navigation principale">
+    <a href="#/" data-tab="home"><span>🏠</span>Accueil</a>
+    <a href="#/explore" data-tab="explore"><span>💎</span>Catégories</a>
+    <a href="#/quiz" data-tab="quiz"><span>🎯</span>Quiz</a>
+    <a href="#/favs" data-tab="favs"><span>💖</span>Chouchoutes</a>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Données : une catégorie par fichier -->
+  <script src="data/cinema.js"></script>
+  <script src="data/series-humour.js"></script>
+  <script src="data/chansons.js"></script>
+  <script src="data/tele.js"></script>
+  <script src="data/internet.js"></script>
+  <script src="data/pubs.js"></script>
+  <script src="data/dessins-animes.js"></script>
+  <script src="data/gifs.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

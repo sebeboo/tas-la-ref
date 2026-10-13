@@ -1,0 +1,15 @@
+{
+  "name": "T'as la ref ?",
+  "short_name": "T'as la ref ?",
+  "description": "Des centaines de références cultes francophones : films, séries, chansons, télé, pubs, internet, dessins animés.",
+  "lang": "fr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ff4fb0",
+  "theme_color": "#ff1493",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
