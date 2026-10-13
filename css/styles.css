@@ -464,3 +464,101 @@ body {
 .cats .cat:nth-child(even) { background-position: 90px 60px, 0 0; }
 .hero { background: url("../img/leopard.svg") 0 0 / 150px auto, var(--grad); }
 .cat-head { background: url("../img/leopard.svg") 0 0 / 150px auto, var(--c, var(--grad)); }
+
+/* ==========================================================
+   Refonte v3 — zéro bouton sombre, onglets bonbon, militaire chic 🎖️
+   ========================================================== */
+:root { --deep: #c2006e; }
+
+/* --- Plus aucun fond sombre --- */
+.sass {
+  background: linear-gradient(100deg, #ff1493 0%, #ff5cc0 50%, #b620e0 100%);
+  color: #fff; text-shadow: 0 1px 0 var(--deep), 0 0 12px rgba(255,255,255,.6);
+  border: 0; box-shadow: var(--sticker-sm);
+}
+.btn, .more { box-shadow: 0 0 0 2.5px #fff, 4px 5px 0 0 var(--deep); }
+.btn:active, .more:active { box-shadow: 0 0 0 2.5px #fff, 1px 1px 0 0 var(--deep); }
+.chip.on { background: var(--grad); color: #fff; border-color: #fff; box-shadow: 0 4px 12px -4px rgba(255,20,147,.7); text-shadow: none; }
+.moment-badge { background: linear-gradient(135deg, #f1e0ff, #ffd6ef); color: var(--violet); }
+.gif-next, .gif-kw {
+  background: rgba(255,255,255,.92); color: var(--pink); backdrop-filter: blur(4px);
+  box-shadow: 0 0 0 2px #fff, 0 4px 10px -4px rgba(194,0,110,.6);
+}
+
+/* --- Barre d'onglets bonbon --- */
+.tabbar {
+  background: linear-gradient(180deg, #ffffff 0%, #ffeaf6 100%);
+  border: 3px solid #fff; border-radius: 32px; padding: 8px 6px 6px; overflow: visible;
+  box-shadow: 0 0 0 2.5px #ff8fcf, 0 14px 30px -10px rgba(182, 32, 224, .7);
+}
+.tabbar a {
+  position: relative; background: none !important; box-shadow: none !important; text-shadow: none !important;
+  color: var(--ink-soft); font-size: 11px; font-weight: 700; gap: 3px; padding: 2px;
+}
+.tabbar a span {
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 21px;
+  background: var(--pink-pale); box-shadow: inset 0 -3px 0 rgba(194,0,110,.12);
+  transition: transform .3s cubic-bezier(.2,1.6,.4,1), background .2s ease, box-shadow .2s ease;
+}
+.tabbar a:active span { transform: scale(.88); }
+.tabbar a.on { color: var(--pink); }
+.tabbar a.on span {
+  background: var(--grad); transform: translateY(-16px) scale(1.14);
+  box-shadow: 0 0 0 4px #fff, 0 0 0 6.5px #ff8fcf, 0 10px 18px -4px rgba(255, 20, 147, .75);
+  animation: bob 2.4s ease-in-out infinite;
+}
+.tabbar a.on::after {
+  content: "✨"; position: absolute; top: -26px; right: calc(50% - 34px); font-size: 14px;
+  animation: twinkle 1.4s ease-in-out infinite alternate;
+}
+.tabbar a.on::before {
+  content: ""; position: absolute; bottom: -1px; left: 50%; width: 18px; height: 4px; margin-left: -9px;
+  border-radius: 4px; background: var(--grad);
+}
+@keyframes bob { 0%, 100% { transform: translateY(-16px) scale(1.14); } 50% { transform: translateY(-19px) scale(1.14); } }
+
+/* --- Militaire : uniquement le fond camouflage des tuiles --- */
+.cat { background: url("../img/camo.svg") 0 0 / 200px auto, var(--c, var(--grad)); }
+.cats .cat:nth-child(even) { background-position: 90px 60px, 0 0; }
+
+/* --- Fiche « En savoir + » --- */
+.more-info { margin-top: 10px; border-radius: 16px; background: var(--pink-milk); padding: 10px 12px; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+.more-info[hidden] { display: none; }
+.more-info h4 { margin: 0 0 6px; font-size: 13px; color: var(--pink); font-weight: 800; }
+.more-info p { margin: 0 0 10px; }
+.links { display: flex; flex-wrap: wrap; gap: 6px; }
+.links a {
+  display: inline-flex; align-items: center; gap: 5px; padding: 6px 11px; border-radius: 999px; text-decoration: none;
+  font-weight: 700; font-size: 12.5px; color: var(--pink); background: #fff; box-shadow: 0 0 0 1.5px #ffc6ea;
+}
+.links a:active { transform: scale(.95); }
+.legal { margin: 8px 0 0 !important; font-size: 11.5px; opacity: .85; }
+.act.info.on { background: var(--grad); color: #fff; }
+
+/* --- Splash : tags clairs --- */
+.splash-shade { background: linear-gradient(180deg, transparent 42%, rgba(255, 20, 147, .28) 64%, rgba(122, 0, 70, .78) 100%); }
+.splash-tag { background: #fff; color: var(--pink); text-shadow: none; border: 0; box-shadow: 0 0 0 3px #ff8fcf, 4px 5px 0 var(--deep); }
+
+/* --- Splash sur grands écrans : image entière + texte à côté --- */
+.splash::before { content: none; }
+@media (min-width: 760px) and (min-aspect-ratio: 4/5) {
+  .splash { align-items: center; justify-content: flex-start; }
+  .splash::before {
+    content: ""; position: absolute; inset: -40px; background: url("../img/splash.jpg") center / cover;
+    filter: blur(28px) saturate(1.3) brightness(1.05); transform: scale(1.1);
+  }
+  .splash-img {
+    position: relative; inset: auto; z-index: 1; width: auto; height: 90vh; max-width: 48vw; margin-left: 6vw;
+    object-fit: cover; object-position: center top; border-radius: 34px;
+    box-shadow: 0 0 0 6px #fff, 14px 16px 0 0 rgba(194, 0, 110, .45), 0 30px 60px -20px rgba(122, 0, 70, .6);
+    transform: rotate(-2deg); animation: floatin .9s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  @keyframes floatin { from { opacity: 0; transform: translateX(-60px) rotate(-8deg) scale(.92); } to { opacity: 1; transform: rotate(-2deg); } }
+  .splash-shade { background: linear-gradient(90deg, transparent 35%, rgba(255, 20, 147, .35) 60%, rgba(182, 32, 224, .55) 100%); z-index: 1; }
+  .splash-text { position: relative; z-index: 2; flex: 1; text-align: center; padding: 0 4vw; }
+  .splash-title { font-size: clamp(64px, 8vw, 132px); white-space: normal; line-height: 1.1; }
+  .splash-tag { font-size: clamp(16px, 1.6vw, 22px); padding: 12px 24px; }
+  .splash-tap { font-size: 15px; }
+  .splash-emojis { z-index: 2; }
+  .splash-emojis span { --s: 44px; }
+}

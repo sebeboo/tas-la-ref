@@ -120,6 +120,57 @@
     toast((await copyText(url)) ? "GIF copié. Envoie-le, ils vont comprendre 💅" : "Impossible de copier 🙄");
   }
 
+  /* ---------- « En savoir + » : contexte et liens de recherche vers des sources légales ---------- */
+  const enc = encodeURIComponent;
+  const cleanSrc = (s) => s.replace(/\s*\(VF\)/g, "").split(" — ")[0].replace(/[«»]/g, "").trim();
+  const firstWho = (w) => w.split(/[(,—]/)[0].trim();
+  const L = {
+    wiki: (q) => ["📖", "Wikipédia", `https://fr.wikipedia.org/w/index.php?search=${enc(q)}`],
+    jw: (q) => ["🍿", "Où le regarder légalement", `https://www.justwatch.com/fr/recherche?q=${enc(q)}`],
+    yt: (q, label = "YouTube") => ["▶️", label, `https://www.youtube.com/results?search_query=${enc(q)}`],
+    ina: (q) => ["📼", "Archives INA", `https://www.ina.fr/recherche?q=${enc(q)}`],
+    dz: (q) => ["🎧", "Deezer", `https://www.deezer.com/search/${enc(q)}`],
+    sp: (q) => ["💚", "Spotify", `https://open.spotify.com/search/${enc(q)}`],
+  };
+  const SLANG = /^(Expression|Langage SMS|Verlan|TikTok|Twitter|Twitter \/ X|Mème|Cours de récré \/ TikTok|Confinement|Blague internet|Skyblog.*|MSN Messenger|Les chaînes de mails|YouTube beauté)$/;
+  function resources(r) {
+    const src = cleanSrc(r.s), who = firstWho(r.w), y = r.y ? " " + r.y : "";
+    switch (r.cat.id) {
+      case "cinema": return [L.jw(src), L.wiki(src), L.yt(src + " bande annonce", "Bande-annonce")];
+      case "series": return r.vf ? [L.jw(src), L.wiki(src)] : [L.ina(src), L.yt(src), L.wiki(src)];
+      case "chansons": { const q = `${r.w} ${r.s}`; return [L.dz(q), L.sp(q), L.yt(q + " clip officiel", "Clip officiel"), L.wiki(r.w)]; }
+      case "tele": return [L.ina(`${src} ${who}`.trim()), L.wiki(`${src}${y}`)];
+      case "internet": return SLANG.test(r.s) ? [] : [L.yt(`${who} ${src}`), L.wiki(who)];
+      case "pubs": return [L.ina(`publicité ${src}`), L.yt(`pub ${src}${y}`, "Revoir la pub")];
+      case "dessins-animes": return [L.jw(src), L.wiki(src)];
+      case "gifs": return [["🎞️", "Giphy", gifUrl(r)], L.wiki(src)];
+      default: return [L.wiki(src)];
+    }
+  }
+  function contextText(r) {
+    if (r.moment) return "";
+    const src = cleanSrc(r.s), y = r.y ? ` (${r.y})` : "", w = r.w ? ` — ${r.w}` : "";
+    switch (r.cat.id) {
+      case "cinema": return `Tirée du film « ${src} »${y}${w}.`;
+      case "series": return `Tirée de « ${src} »${y}${w}.`;
+      case "chansons": return `Le passage culte de « ${r.s} », ${r.w}${y}.`;
+      case "tele": return `Un moment de télé : ${src}${y}${w}.`;
+      case "pubs": return `Le slogan publicitaire de ${src}${y}${r.w && r.w !== "Slogan" ? ` — ${r.w}` : ""}.`;
+      case "internet": return SLANG.test(r.s) ? `Le sens : ${r.w}.` : `Né sur internet ou devenu viral : ${src}${y}${w}.`;
+      case "dessins-animes": return `Tirée de « ${src} »${y}${w}.`;
+      default: return `${src}${y}${w}.`;
+    }
+  }
+  function infoHTML(r) {
+    const links = resources(r);
+    const ctx = contextText(r);
+    return `<div class="more-info" hidden>
+      ${ctx ? `<h4>Le contexte</h4><p>${esc(ctx)}</p>` : ""}
+      ${links.length ? `<h4>Pour aller plus loin</h4><div class="links">${links.map(([i, l, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${i} ${esc(l)}</a>`).join("")}</div>
+      <p class="legal">Liens de recherche vers des services officiels et légaux.</p>` : ""}
+    </div>`;
+  }
+
   function cardHTML(r, opts = {}) {
     const t = opts.terms;
     const on = favs.has(r.id);
@@ -141,7 +192,9 @@
             : `<a class="act" href="${gifUrl(r)}" target="_blank" rel="noopener" aria-label="Voir le GIF sur Giphy">🎞️ Voir le GIF</a>`)
           : `<button class="act" data-act="copy" aria-label="Copier la référence">📋 Copier</button>
         <button class="act" data-act="share" aria-label="Partager la référence">💌 Partager</button>`}
+        <button class="act info" data-act="info" aria-expanded="false" aria-label="En savoir plus sur cette référence">🔎 En savoir +</button>
       </div>
+      ${infoHTML(r)}
     </article>`;
   }
 
@@ -473,6 +526,10 @@
         b.innerHTML = `<span class="h">${on ? "💖" : "🤍"}</span>${on ? "Adorée" : "J'adore"}`;
       });
       if (on) { burst(e.clientX, e.clientY); toast(pick(SASS_FAV)); } else toast("Retirée. Elle méritait pas ta lumière ✨");
+    } else if (act === "info") {
+      const panel = btn.closest(".ref").querySelector(".more-info");
+      const open = panel.hidden; panel.hidden = !open;
+      btn.classList.toggle("on", open); btn.setAttribute("aria-expanded", open);
     } else if (act === "nextgif") {
       loadGif(btn.closest(".gif-box"), 1);
     } else if (act === "gifkw") {
