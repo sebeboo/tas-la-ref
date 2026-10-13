@@ -10,12 +10,12 @@ window.TALR_DATA.push({
   refs: [
     // --- Disney & Pixar (VF) ---
     ["Hakuna matata, quelle phrase magnifique !", "Le Roi lion (VF)", "Timon & Pumbaa", 1994, "« Hakuna matata » veut dire « pas de soucis » en swahili. La philosophie de Timon et Pumbaa, pour dédramatiser."],
-    ["Souviens-toi de qui tu es.", "Le Roi lion (VF)", "Mufasa à Simba", 1994, "Mufasa apparaît dans les nuages pour guider Simba. Pour redonner confiance à une amie."],
+    ["Souviens-toi de qui tu es.", "Le Roi lion (VF)", "Mufasa à Simba", 1994, "Mufasa apparaît dans les nuages pour guider Simba. Pour redonner confiance à un·e ami·e."],
     ["Ah oui, le passé peut faire mal. Mais à mon avis, on peut soit le fuir, soit tout en apprendre.", "Le Roi lion (VF)", "Rafiki", 1994, "Rafiki donne une leçon à Simba… après lui avoir tapé sur la tête. Pour tourner la page d'une rupture."],
     ["Je voudrais déjà être roi !", "Le Roi lion (VF)", "Simba (chanson)", 1994, "Le jeune Simba rêve d'être roi au plus vite. Pour l'impatience de grandir (ou d'avoir 18 ans)."],
     ["Libérée, délivrée !", "La Reine des neiges (VF)", "Elsa", 2013, "La chanson qu'aucun parent n'a pu éviter en 2014, chantée par Anaïs Delva en VF."],
     ["Je suis Olaf et j'aime les gros câlins !", "La Reine des neiges (VF)", "Olaf", 2013, "Le bonhomme de neige qui rêve de l'été. Pour réclamer un câlin."],
-    ["Et si on construisait un bonhomme de neige ?", "La Reine des neiges (VF)", "Anna", 2013, "Anna frappe à la porte d'Elsa, enfermée. Pour proposer une activité à une amie qui se renferme."],
+    ["Et si on construisait un bonhomme de neige ?", "La Reine des neiges (VF)", "Anna", 2013, "Anna frappe à la porte d'Elsa, enfermée. Pour proposer une activité à un·e ami·e qui se renferme."],
     ["📍 Dans La Petite Sirène, Sébastien le crabe chante « Sous l'océan » pour convaincre Ariel de rester sous la mer", "La Petite Sirène (VF)", "Sébastien le crabe", 1989],
     ["📍 Dans Aladdin, le duo « Ce rêve bleu » sur le tapis volant, avec Jasmine", "Aladdin (VF)", "Aladdin & Jasmine", 1992],
     ["Je suis ton meilleur ami", "Aladdin (VF)", "Le Génie", 1992, "Le Génie énumère ses pouvoirs à Aladdin dans un numéro endiablé. Pour se présenter comme l'amie idéale."],
@@ -36,7 +36,7 @@ window.TALR_DATA.push({
     ["Bouh !", "Monstres et Cie (VF)", "La petite Bouh", 2001, "La petite fille qui n'a pas peur des monstres et les surnomme à sa façon. Pour faire peur… pour rire."],
     ["📍 Dans Toy Story, la chanson « Je suis ton ami » accompagne l'amitié entre Woody et Andy", "Toy Story (VF)", "La chanson du film", 1995],
     ["Continue à nager, continue à nager…", "Le Monde de Nemo (VF)", "Dory", 2003, "Le mantra de Dory, poisson à la mémoire courte mais à l'optimisme infini. Pour persévérer."],
-    ["Tout le monde peut cuisiner.", "Ratatouille (VF)", "Auguste Gusteau", 2007, "La devise du chef Gusteau, qui inspire le rat Rémy. Pour encourager une amie en cuisine."],
+    ["Tout le monde peut cuisiner.", "Ratatouille (VF)", "Auguste Gusteau", 2007, "La devise du chef Gusteau, qui inspire le rat Rémy. Pour encourager un·e ami·e en cuisine."],
     ["Écureuil !", "Là-haut (VF)", "Doug le chien", 2009, "Doug, chien qui parle grâce à son collier, est distrait par le moindre écureuil. Quand tu perds le fil."],
     ["Pas de capes !", "Les Indestructibles (VF)", "Edna Mode", 2004, "Edna Mode, styliste des super-héros, refuse les capes après des accidents mémorables. Pour refuser catégoriquement."],
     ["On ne parle pas de Bruno", "Encanto (VF)", "La famille Madrigal", 2021, "La famille Madrigal évite de parler de l'oncle aux prédictions inquiétantes. Pour un sujet tabou en famille."],

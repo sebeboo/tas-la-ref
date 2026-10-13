@@ -581,3 +581,26 @@ body {
   50%  { transform: translate(18vw, -6vh) scale(1.15); }
   100% { transform: translate(-10vw, 8vh) scale(.95); }
 }
+
+/* --- Encadrés internes alignés sur le texte de la carte (sans retrait à gauche) --- */
+.note { background: none; border-left: 0; padding: 4px 0 0; border-radius: 0; }
+.more-info { background: none; padding: 10px 0 0; border-radius: 0; border-top: 2px dashed #ffd0ea; margin-top: 12px; }
+
+/* --- Pique sous le titre des catégories --- */
+.cat-head .cat-sass {
+  display: inline-block; margin-top: 10px; padding: 6px 12px; border-radius: 999px;
+  background: #fff; color: var(--pink); font-weight: 700; font-size: 13px; transform: rotate(-1.5deg);
+  box-shadow: 3px 4px 0 rgba(122, 0, 70, .35);
+}
+
+/* --- Image libre façon sticker polaroid --- */
+.ref-img {
+  float: right; width: 72px; height: 72px; margin: 0 0 8px 12px; border-radius: 18px; overflow: hidden;
+  background: var(--pink-pale); transform: rotate(4deg);
+  box-shadow: 0 0 0 3px #fff, 4px 5px 0 rgba(194, 0, 110, .35);
+  animation: pop .4s cubic-bezier(.2, 1.4, .4, 1);
+}
+.ref-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ref.has-img::before { display: none; }
+.credit:empty { display: none; }
+.credit a { color: var(--pink); font-weight: 700; }

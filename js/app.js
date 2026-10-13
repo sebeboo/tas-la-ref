@@ -179,10 +179,84 @@
     const links = resources(r);
     const ctx = contextText(r);
     return `<div class="more-info" hidden>
-      ${ctx ? `<h4>Le contexte</h4><p>${esc(ctx)}</p>` : ""}
-      ${links.length ? `<h4>Pour aller plus loin</h4><div class="links">${links.map(([i, l, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${i} ${esc(l)}</a>`).join("")}</div>
+      ${ctx ? `<h4>☕ Le contexte</h4><p>${esc(ctx)}</p>` : ""}
+      ${links.length ? `<h4>🔗 Pour aller plus loin (légalement, on a des principes)</h4><div class="links">${links.map(([i, l, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${i} ${esc(l)}</a>`).join("")}</div>
       <p class="legal">Liens de recherche vers des services officiels et légaux.</p>` : ""}
+      <p class="credit legal"></p>
     </div>`;
+  }
+
+  /* ---------- Images libres de droits (Wikipédia / Wikimedia Commons) ---------- */
+  const IMGS = window.TALR_IMAGES || {}; // pré-calculé (data/images.js) : requête -> { src, file, title, artist, license, url } ou null
+  let wikiCache = store.get("wikiImg", {}); // repli : refs ajoutées après le pré-calcul
+  let wikiQueue = Promise.resolve();       // une requête à la fois, espacées, pour respecter Wikimedia
+  const politely = (fn) => (wikiQueue = wikiQueue.then(() => new Promise((ok) => setTimeout(ok, 500))).then(fn, fn));
+  const isPerson = (w) => /^[A-ZÀ-Ý][\p{L}'-]+(\s+(de\s+|d'|De\s+)?[A-ZÀ-Ý][\p{L}'-]+)+$/u.test(w);
+  function wikiQuery(r) {
+    const src = cleanSrc(r.s), who = firstWho(r.w);
+    switch (r.cat.id) {
+      case "cinema": return `${src} film`;
+      case "series": return r.vf ? `${src} série télévisée` : src;
+      case "chansons": return r.w.split(/\s*[&,]\s*|\s+\(/)[0];
+      case "tele": case "internet": return SLANG.test(r.s) ? "" : isPerson(who) ? who : src;
+      case "pubs": return src.split(/\s*\(/)[0];
+      case "dessins-animes": return src;
+      default: return ""; // les GIF ont déjà leur image
+    }
+  }
+  const words = (t) => norm(t).split(/[^a-z0-9]+/).filter((w) => w.length > 3 && !["film", "serie", "televisee"].includes(w));
+  async function wikiImage(q) {
+    if (q in IMGS) return IMGS[q];
+    if (q in wikiCache) return wikiCache[q];
+    return politely(() => wikiFetch(q));
+  }
+  async function wikiFetch(q) {
+    const url = `https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=1&gsrnamespace=0&gsrsearch=${enc(q)}&prop=pageimages&piprop=thumbnail|name&pithumbsize=240`;
+    const json = await (await fetch(url)).json();
+    const page = json.query && Object.values(json.query.pages)[0];
+    // garde-fou : le titre de la page doit partager un mot avec la recherche
+    const ok = page && page.thumbnail && words(q).some((w) => norm(page.title).includes(w));
+    const res = ok ? { src: page.thumbnail.source, file: page.pageimage, title: page.title } : null;
+    if (Object.keys(wikiCache).length > 600) wikiCache = {};
+    wikiCache[q] = res; store.set("wikiImg", wikiCache);
+    return res;
+  }
+  async function loadWikiImg(card) {
+    const r = BY_ID.get(card.dataset.id); const q = r && wikiQuery(r);
+    if (!q) return;
+    try {
+      const img = await wikiImage(q);
+      if (!img) return;
+      card.classList.add("has-img");
+      card.insertAdjacentHTML("afterbegin", `<figure class="ref-img"><img src="${esc(img.src)}" alt="${esc(img.title)}" loading="lazy"></figure>`);
+      card.dataset.wfile = img.file || ""; card.dataset.wq = q;
+    } catch { /* pas d'image, pas de drame */ }
+  }
+  async function loadCredit(card) {
+    const file = card.dataset.wfile, box = card.querySelector(".credit");
+    if (!file || !box || box.dataset.done) return;
+    box.dataset.done = "1";
+    const pre = IMGS[card.dataset.wq];
+    if (pre && pre.url) {
+      box.innerHTML = `📷 Photo : ${esc(pre.artist || "auteur·rice inconnu·e")} · ${esc(pre.license || "licence libre")} — <a href="${esc(pre.url)}" target="_blank" rel="noopener">Wikimedia Commons</a>`;
+      return;
+    }
+    try {
+      const url = `https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${enc("Fichier:" + file)}&prop=imageinfo&iiprop=extmetadata|url`;
+      const json = await (await fetch(url)).json();
+      const info = Object.values(json.query.pages)[0].imageinfo[0];
+      const meta = info.extmetadata || {};
+      const strip = (h) => String(h || "").replace(/<[^>]+>/g, "").trim();
+      const artist = strip(meta.Artist && meta.Artist.value) || "auteur·rice inconnu·e";
+      const lic = strip(meta.LicenseShortName && meta.LicenseShortName.value) || "licence libre";
+      box.innerHTML = `📷 Photo : ${esc(artist.slice(0, 80))} · ${esc(lic)} — <a href="${esc(info.descriptionurl)}" target="_blank" rel="noopener">Wikimedia Commons</a>`;
+    } catch { box.textContent = "📷 Image libre issue de Wikimedia Commons."; }
+  }
+  const imgObserver = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { imgObserver.unobserve(e.target); loadWikiImg(e.target); } }), { rootMargin: "400px" })
+    : null;
+  function observeImgs(root) {
+    root.querySelectorAll(".ref:not([data-wi])").forEach((c) => { c.dataset.wi = "1"; imgObserver ? imgObserver.observe(c) : loadWikiImg(c); });
   }
 
   function cardHTML(r, opts = {}) {
@@ -202,11 +276,11 @@
         <button class="act heart ${on ? "on" : ""}" data-act="fav" aria-pressed="${on}" aria-label="${on ? "Retirer des favoris" : "Ajouter aux favoris"}"><span class="h">${on ? "💖" : "🤍"}</span>${on ? "Adorée" : "J'adore"}</button>
         ${r.cat.gif
           ? (giphyKey
-            ? `<button class="act" data-act="sharegif" aria-label="Envoyer ce GIF">💌 Envoyer le GIF</button>`
+            ? `<button class="act" data-act="sharegif" aria-label="Envoyer ce GIF">💅 Balance le GIF</button>`
             : `<a class="act" href="${gifUrl(r)}" target="_blank" rel="noopener" aria-label="Voir le GIF sur Giphy">🎞️ Voir le GIF</a>`)
           : `<button class="act" data-act="copy" aria-label="Copier la référence">📋 Copier</button>
         <button class="act" data-act="share" aria-label="Partager la référence">💌 Partager</button>`}
-        <button class="act info" data-act="info" aria-expanded="false" aria-label="En savoir plus sur cette référence">🔎 En savoir +</button>
+        <button class="act info" data-act="info" aria-expanded="false" aria-label="En savoir plus sur cette référence">☕ Le tea</button>
       </div>
       ${infoHTML(r)}
     </article>`;
@@ -223,7 +297,7 @@
     const step = () => {
       const next = refs.slice(shown, shown + PAGE);
       list.insertAdjacentHTML("beforeend", next.map((r) => cardHTML(r, opts)).join(""));
-      observeGifs(list);
+      observeGifs(list); observeImgs(list);
       shown += next.length;
       if (shown < refs.length) { moreBtn.textContent = `Voir plus de refs ✨ (${refs.length - shown})`; if (!moreBtn.isConnected) container.appendChild(moreBtn); }
       else moreBtn.remove();
@@ -235,19 +309,41 @@
   /* ---------- Le ton de la maison 💅 ---------- */
   const SASS_TAGS = [
     "Si t'as pas la ref, c'est pas grave. Enfin… un peu quand même 💅",
-    "On ne juge pas. On constate. 💁‍♀️",
+    "On ne juge pas. On constate. 💁",
     "Ici, on cite, on brille, on passe à autre chose ✨",
     "Avoir la ref, c'est un mode de vie 👑",
     "Ta culture G, mais en mieux habillée 💋",
-    "Sois celle qui a toujours la bonne réplique 💅",
+    "Sois la personne qui a toujours la bonne réplique 💅",
     "Une app de refs et t'as pas la ref ?! Allô ?! 📞",
-    "Les vraies savent. Les autres apprennent ici 💖",
-    "Trop de refs ? Ça n'existe pas, chérie 💎",
+    "Les vrai·e·s savent. Les autres apprennent ici 💖",
+    "Trop de refs ? Ça n'existe pas, chéri·e 💎",
     "Répartie : 100 %. Modestie : en option 💅",
+    "On est pas méchant·e·s, on est lucides 🙄",
+    "Ta répartie arrive en retard ? On l'a mise en cache 💾",
+    "Interdit aux gens qui disent « c'est quoi la ref ? » 🚫",
+    "Tu scrolles, on brille. Chacun son rôle 💅",
   ];
-  const SASS_OK = ["Évidemment. 💅", "Trop facile pour toi, Reine 👑", "Bien sûr qu'elle a la ref 💁‍♀️", "Validée. Next. ✨", "On n'en attendait pas moins 💎"];
-  const SASS_KO = ["Allô ? Non mais allô ? 📞", "Sérieusement ?! 🙄", "On va faire comme si on n'avait rien vu 🫣", "Ma chérie… non. 💔", "Ça fait mal, mais c'est pour ton bien 💅"];
-  const SASS_FAV = ["Ajoutée. Évidemment, t'as du goût 💅", "Dans tes chouchoutes. Bon choix 💖", "Validée par toi, donc validée tout court ✨", "Ajoutée. Elle est à toi maintenant 💋"];
+  const SASS_OK = ["Évidemment. 💅", "Trop facile pour toi, Majesté 👑", "Bien sûr que t'as la ref 💁", "Validé. Next. ✨", "On n'en attendait pas moins 💎", "Icône. Point. 👑"];
+  const SASS_KO = ["Allô ? Non mais allô ? 📞", "Sérieusement ?! 🙄", "On va faire comme si on n'avait rien vu 🫣", "Chéri·e… non. 💔", "Ça fait mal, mais c'est pour ton bien 💅", "Gênance. Totale. 😬"];
+  const SASS_FAV = ["Ajoutée. Évidemment, t'as du goût 💅", "Dans tes chouchoutes. Bon choix 💖", "Validée par toi, donc validée tout court ✨", "Ajoutée. Elle est à toi maintenant 💋", "Goût impeccable, comme d'hab 💎"];
+  const SASS_COPY = ["Copiée. Va briller ailleurs maintenant 💋", "Copiée. Balance-la au bon moment, hein 💅", "Dans ton presse-papier. Fais-en bon usage 😏"];
+  const SASS_SEARCH = [
+    "Balance ta ref, on juge pas… enfin si 💅",
+    "Tape « blanquette », on sait que t'en meurs d'envie",
+    "Un film, un·e artiste, une pub… vas-y, on attend 🙄",
+    "Cherche, et tu trouveras (peut-être) 💁",
+    "« Allô », « shampooing »… tu connais la suite 📞",
+  ];
+  const CAT_SASS = {
+    cinema: "Pour celles et ceux qui citent Audiard au brunch 🥂",
+    series: "Le binge-watching, mais avec de la répartie 📺",
+    chansons: "Interdiction de chanter faux. On t'entend d'ici 🎤",
+    tele: "La télé, la vraie. Celle qui t'a élevé·e 📡",
+    internet: "Si t'as pas eu de Skyblog, on ne peut rien pour toi 💻",
+    pubs: "Des slogans plus mémorables que ton code PIN 📢",
+    "dessins-animes": "Ton enfance, en version qui claque 🧸",
+    gifs: "Pour répondre sans écrire un mot. La classe 🎞️",
+  };
 
   /* ---------- Vues ---------- */
   function refOfTheDay() {
@@ -277,15 +373,15 @@
         </div>
       </section>
       <div class="stats">
-        <div class="stat"><b>${ALL.length}</b><span>références</span></div>
+        <div class="stat"><b>${ALL.length}</b><span>refs (rien que ça)</span></div>
         <div class="stat"><b>${CATS.length}</b><span>catégories</span></div>
         <div class="stat"><b>${favs.size}</b><span>chouchoutes</span></div>
       </div>
-      <div class="h-section"><h2>Choisis ton poison 💅</h2><small><a href="#/explore" style="color:#fff">tout voir</a></small></div>
+      <div class="h-section"><h2>Choisis ton poison 💅</h2><small><a href="#/explore" style="color:#fff">tout voir (si t'oses)</a></small></div>
       <div class="cats">${CATS.map(catTile).join("")}
-        <a class="cat wide" href="#/quiz" style="--c:linear-gradient(135deg,#b620e0,#ff1493)"><span class="emo">🎯</span><div><h3>Quiz : t'as vraiment la ref ?</h3><p>10 questions, prouve que t'es la reine des refs 👑</p></div></a>
+        <a class="cat wide" href="#/quiz" style="--c:linear-gradient(135deg,#b620e0,#ff1493)"><span class="emo">🎯</span><div><h3>Quiz : t'as vraiment la ref ?</h3><p>10 questions pour prouver que tu règnes sur les refs 👑</p></div></a>
       </div>
-      <div class="h-section"><h2>Les refs que t'es censée connaître 🙄</h2><small>au hasard</small></div>
+      <div class="h-section"><h2>Les refs que t'es censé·e connaître 🙄</h2><small>au hasard</small></div>
       <div id="picks"></div>
       <p class="footer-note">Fait avec 💖, des paillettes et zéro modestie</p>`;
     renderList($("#picks"), shuffle(ALL).slice(0, 6), { showCat: true });
@@ -318,6 +414,7 @@
         <span class="emo">${c.emoji}</span>
         <h1>${esc(c.nom)}</h1>
         <p>${esc(c.desc)} · <b>${c.items.length} refs</b></p>
+        ${CAT_SASS[c.id] ? `<p class="cat-sass">${CAT_SASS[c.id]}</p>` : ""}
       </section>
       <div class="toolbar" id="tb">
         ${Object.entries(SORTS).map(([k, v]) => `<button class="chip" data-sort="${k}">${v.label}</button>`).join("")}
@@ -471,7 +568,7 @@
       }
       return { r, right, options: shuffle([right, ...wrong]) };
     });
-    let i = 0, score = 0;
+    let i = 0, score = 0, streak = 0;
 
     const draw = () => {
       const q = questions[i];
@@ -487,9 +584,9 @@
         const b = e.target.closest(".choice"); if (!b || b.disabled) return;
         const ok = b.dataset.o === q.right;
         view.querySelectorAll(".choice").forEach((c) => { c.disabled = true; if (c.dataset.o === q.right) c.classList.add("good"); });
-        if (ok) { score++; burst(e.clientX, e.clientY); } else b.classList.add("bad");
+        if (ok) { score++; streak++; burst(e.clientX, e.clientY); if (streak === 3) toast("3 d'affilée. Tu chauffes 🔥"); if (streak === 5) toast("5 d'affilée ?! On appelle les pompiers 🚒"); } else { streak = 0; b.classList.add("bad"); }
         $("#after").innerHTML = `<p class="meta" style="margin:14px 0 0">${ok ? "✅ " + pick(SASS_OK) : "❌ " + pick(SASS_KO)} <strong>${esc(q.r.s)}</strong>${q.r.y ? " · " + esc(q.r.y) : ""}${q.r.w ? " — " + esc(q.r.w) : ""}</p>
-          <div class="center"><button class="btn" id="next">${i + 1 < questions.length ? "Next, chérie →" : "Le verdict 👀"}</button></div>`;
+          <div class="center"><button class="btn" id="next">${i + 1 < questions.length ? "Next, chéri·e →" : "Le verdict 👀"}</button></div>`;
         $("#next").addEventListener("click", () => { i++; i < questions.length ? draw() : end(); });
       });
     };
@@ -499,7 +596,7 @@
       const isBest = score > (best[mode] ?? -1);
       if (isBest) { best[mode] = score; store.set("best", best); }
       const pct = score / questions.length;
-      const title = pct === 1 ? "Sans faute. On s'incline, Reine 👑" : pct >= .8 ? "Une icône. Ni plus, ni moins 💎" : pct >= .6 ? "Ok, t'as la ref. On valide 💅" : pct >= .4 ? "Mouais. Ça passe… de justesse 🙄" : pct >= .2 ? "Chérie, on va réviser ensemble 📚" : "Allô ? Non mais allô ?! T'as pas la ref ?! 📞";
+      const title = pct === 1 ? "Sans faute. On s'incline, Majesté 👑" : pct >= .8 ? "Une icône. Ni plus, ni moins 💎" : pct >= .6 ? "Ok, t'as la ref. On valide 💅" : pct >= .4 ? "Mouais. Ça passe… de justesse 🙄" : pct >= .2 ? "Chéri·e, on va réviser ensemble 📚" : "Allô ? Non mais allô ?! T'as pas la ref ?! 📞";
       view.innerHTML = `<div class="quiz-card center">
         <p class="score-big">${score}/${questions.length}</p>
         <p class="score-title">${title}</p>
@@ -543,6 +640,7 @@
     } else if (act === "info") {
       const panel = btn.closest(".ref").querySelector(".more-info");
       const open = panel.hidden; panel.hidden = !open;
+      if (open) loadCredit(btn.closest(".ref"));
       btn.classList.toggle("on", open); btn.setAttribute("aria-expanded", open);
     } else if (act === "nextgif") {
       loadGif(btn.closest(".gif-box"), 1);
@@ -556,9 +654,9 @@
     } else if (act === "sharegif") {
       const st = gifState.get(r.id);
       if (st && st.list.length) shareLink(st.list[st.i].page, `« ${r.q} » #TasLaRef`);
-      else toast("Patience, le GIF se fait belle ⏳");
+      else toast("Patience, le GIF se refait une beauté ⏳");
     } else if (act === "copy") {
-      toast((await copyText(refText(r))) ? "Copiée. Va briller ailleurs maintenant 💋" : "Impossible de copier 🙄");
+      toast((await copyText(refText(r))) ? pick(SASS_COPY) : "Impossible de copier 🙄");
     } else if (act === "share") {
       if (navigator.share) { try { await navigator.share({ title: "T'as la ref ?", text: refText(r) }); } catch { /* partage annulé */ } }
       else toast((await copyText(refText(r))) ? "Copiée. Balance-la dans le groupe 💌" : "Partage indisponible 🙄");
@@ -674,6 +772,14 @@
     splash.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") close(); });
     setTimeout(close, 4200);
   }
+
+  /* ---------- Petites touches sassy ---------- */
+  let ph = 0;
+  setInterval(() => {
+    if (document.activeElement === input || input.value) return;
+    ph = (ph + 1) % SASS_SEARCH.length; input.placeholder = SASS_SEARCH[ph];
+  }, 4000);
+  setTimeout(() => toast("5 minutes ici. Ta vie sociale t'appelle 📞 (on rigole, reste 💅)"), 5 * 60 * 1000);
 
   route();
 

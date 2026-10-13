@@ -29,7 +29,7 @@ window.TALR_DATA.push({
     ["📍 Un président photographié en scooter, casque sur la tête, en route vers un rendez-vous discret", "Couverture de magazine", "François Hollande", 2014],
     ["📍 François Hollande, trempé jusqu'aux os, prononce son discours sous une pluie battante", "Île de Sein", "François Hollande, trempé jusqu'aux os", 2016],
     ["Qui imagine le général de Gaulle mis en examen ?", "Campagne de la primaire", "François Fillon", 2016, "Une phrase de campagne qui s'est retournée contre son auteur après les affaires. L'exemple parfait de l'effet boomerang."],
-    ["Rends l'argent !", "Campagne présidentielle", "Le slogan scandé contre François Fillon", 2017, "Le slogan scandé lors de la campagne de 2017. Pour réclamer les 10 € prêtés à une amie."],
+    ["Rends l'argent !", "Campagne présidentielle", "Le slogan scandé contre François Fillon", 2017, "Le slogan scandé lors de la campagne de 2017. Pour réclamer les 10 € prêtés à un·e ami·e."],
     ["Je n'ai pas, je n'ai jamais eu de compte à l'étranger.", "Assemblée nationale", "Jérôme Cahuzac", 2012, "Un démenti solennel à l'Assemblée… avant l'aveu quelques mois plus tard. Le mensonge démasqué par excellence."],
     ["Tu ne me fais pas les poches, hein !", "Déplacement à Strasbourg", "François Bayrou, avant la fameuse gifle", 2002, "François Bayrou repousse un enfant qui lui fait les poches, scène filmée en pleine campagne. Pour protéger ton portefeuille."],
     ["📍 Frédéric Lefebvre cite « Zadig et Voltaire » comme livre préféré… c'est une marque de vêtements", "Interview", "Frédéric Lefebvre, citant son livre préféré", 2011],
@@ -42,7 +42,7 @@ window.TALR_DATA.push({
     ["J'adore l'eau. Dans 20-30 ans, y'en aura plus.", "Interview", "Jean-Claude Van Damme", "", "JCVD et sa réflexion inquiète et décalée sur l'eau. Pour boire un verre d'eau avec gravité."],
     ["Si tu travailles avec un marteau-piqueur pendant un tremblement de terre, désynchronise-toi, sinon tu travailles pour rien.", "Interview", "Jean-Claude Van Damme", 2004, "Une sagesse de JCVD qui a fait le tour d'internet. Pour un conseil incompréhensible mais inspirant."],
     // --- YouTube & créateurs ---
-    ["Salut les geeks !", "Salut les geeks", "Mathieu Sommet", 2010, "L'intro de l'émission de Mathieu Sommet, pilier du YouTube français. Pour saluer tes amis gameuses."],
+    ["Salut les geeks !", "Salut les geeks", "Mathieu Sommet", 2010, "L'intro de l'émission de Mathieu Sommet, pilier du YouTube français. Pour saluer tes potes gamers."],
     ["What the Cut ?!", "What the Cut", "Antoine Daniel", 2011, "L'émission d'Antoine Daniel qui commente les vidéos les plus absurdes d'internet. Devant une vidéo complètement folle."],
     ["C'est en faisant n'importe quoi qu'on devient n'importe qui.", "Rémi Gaillard", "La devise du roi des vidéos à sketchs", 2005, "La devise de Rémi Gaillard, roi des canulars filmés de Montpellier. Pour justifier une idée farfelue."],
     ["📍 Norman et ses vidéos sur la vie de tous les jours, pionnier du YouTube français", "YouTube", "Norman Thavaud", 2011],
@@ -56,10 +56,10 @@ window.TALR_DATA.push({
     ["Mais t'es pas là, mais t'es où ?", "Vidéo virale", "Inès Reg", 2019],
     ["Coucou les filles !", "YouTube beauté", "L'intro de toutes les vidéos make-up", "", "L'intro typique des vidéos beauté et lifestyle. Pour démarrer un message vocal."],
     // --- Années MSN / Skyblog ---
-    ["Elle répond pas ? Envoie-lui un wizz !", "MSN Messenger", "Faire trembler la fenêtre de discussion", 2005, "Sur MSN Messenger, le wizz faisait trembler la fenêtre de discussion. Pour relancer une amie qui ne répond pas."],
+    ["Elle répond pas ? Envoie-lui un wizz !", "MSN Messenger", "Faire trembler la fenêtre de discussion", 2005, "Sur MSN Messenger, le wizz faisait trembler la fenêtre de discussion. Pour relancer un·e ami·e qui ne répond pas."],
     ["Lâchez vos coms !", "Skyblog", "La fin de chaque article", 2004, "Sur les Skyblogs des années 2000, chaque article réclamait des commentaires. Pour réclamer des likes."],
     ["Kikoo, sa va ? lol", "Skyblog & forums", "Le langage des ados des années 2000", 2005, "Le style SMS des années 2000, orthographe approximative comprise. Pour un message rétro."],
-    ["Si tu ne transfères pas ce message à 10 personnes…", "Les chaînes de mails", "La menace préférée des années 2000", 2003, "Les chaînes de mails menaçantes qui ont terrorisé une génération. Pour taquiner une amie superstitieuse."],
+    ["Si tu ne transfères pas ce message à 10 personnes…", "Les chaînes de mails", "La menace préférée des années 2000", 2003, "Les chaînes de mails menaçantes qui ont terrorisé une génération. Pour taquiner un·e ami·e superstitieuse."],
     ["Et là… paf, le chien !", "Blague internet", "L'histoire absurde qui se termine toujours mal", 2006, "La chute d'une blague absurde qui circulait sur internet. Pour conclure une histoire qui tourne mal."],
     // --- Expressions & tendances ---
     ["Quoi ? — Feur !", "Cours de récré / TikTok", "La réplique la plus agaçante de France", 2021, "Le principe : dès que quelqu'un dit « quoi », on répond « feur ». Profs exaspérés garantis."],

@@ -14,6 +14,12 @@ Chaque carte charge son GIF toute seule (🔄 pour passer au suivant, 💌 pour 
 
 ⚠️ La clé par défaut est visible dans le code source (c'est normal pour une clé Giphy côté navigateur). Une clé personnalisée, elle, reste dans le navigateur du téléphone (localStorage). Les résultats sont mis en cache pour économiser les appels. Une clé gratuite « beta » est limitée en nombre de recherches par heure ; pour une diffusion publique, demander une clé « production » à Giphy.
 
+## Images libres de droits
+Les vignettes viennent de **Wikipédia en français**, qui n'héberge que des images sous licence libre (Wikimedia Commons). Elles sont pré-calculées dans `data/images.js` avec l'auteur·rice et la licence, affichés dans « ☕ Le tea ». Une ref ajoutée plus tard va chercher son image en direct (une requête à la fois). Les films n'ont souvent pas d'image : leurs affiches ne sont pas libres.
+
+## Écriture inclusive
+Les textes de l'interface et les explications utilisent le point médian (« censé·e », « un·e ami·e »). Les citations, elles, restent fidèles à l'original.
+
 ## Ajouter des références
 Chaque catégorie est un fichier de `data/` :
 ```js
