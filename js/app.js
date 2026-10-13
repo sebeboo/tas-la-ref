@@ -96,6 +96,10 @@
     const r = BY_ID.get(box.dataset.gif); if (!r) return;
     let st = gifState.get(r.id);
     try {
+      if (!st && !r.gimg && !gifKw[r.id]) {   // pas de GIF choisi : aucun appel automatique à l'API
+        box.innerHTML = `<div class="gif-skel"><a href="${esc(gifUrl(r))}" target="_blank" rel="noopener">🎞️ Voir le GIF sur Giphy</a></div>`;
+        return;
+      }
       if (!st) {
         // GIF choisi à la main : affiché sans appel à l'API (sauf si un autre mot-clé a été demandé)
         st = r.gimg && !gifKw[r.id]

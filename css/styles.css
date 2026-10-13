@@ -604,3 +604,10 @@ body {
 .ref.has-img::before { display: none; }
 .credit:empty { display: none; }
 .credit a { color: var(--pink); font-weight: 700; }
+
+/* --- Héros sans tourbillon --- */
+.hero::before { content: none; animation: none; }
+
+/* --- Pastilles de filtres : retour à la ligne au lieu du défilement (plus rien de coupé) --- */
+.toolbar { flex-wrap: wrap; overflow: visible; padding: 2px 0 4px; }
+.chip { padding: 7px 12px; font-size: 12.5px; }
